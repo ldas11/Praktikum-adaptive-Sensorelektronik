@@ -1,0 +1,1891 @@
+ARM GAS  C:\Users\urdjt\AppData\Local\Temp\ccRtXUZb.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"main.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.global	__aeabi_ui2d
+  20              		.global	__aeabi_dmul
+  21              		.global	__aeabi_d2uiz
+  22              		.section	.text.main,"ax",%progbits
+  23              		.align	2
+  24              		.global	main
+  25              		.thumb
+  26              		.thumb_func
+  27              		.type	main, %function
+  28              	main:
+  29              	.LFB64:
+  30              		.file 1 "main.c"
+   1:main.c        **** /* ========================================
+   2:main.c        ****  *
+   3:main.c        ****  * Copyright YOUR COMPANY, THE YEAR
+   4:main.c        ****  * All Rights Reserved
+   5:main.c        ****  * UNPUBLISHED, LICENSED SOFTWARE.
+   6:main.c        ****  *
+   7:main.c        ****  * CONFIDENTIAL AND PROPRIETARY INFORMATION
+   8:main.c        ****  * WHICH IS THE PROPERTY OF your company.
+   9:main.c        ****  *
+  10:main.c        ****  * ========================================
+  11:main.c        **** */
+  12:main.c        **** #include "project.h"
+  13:main.c        **** #include "stdio.h"
+  14:main.c        **** 
+  15:main.c        **** int16 adcResult = 0;
+  16:main.c        **** int16 adcResultAlarm = 0;
+  17:main.c        **** unsigned long int counterResult = 0u;
+  18:main.c        **** char toSend[16];
+  19:main.c        **** char displayTime[30];
+  20:main.c        **** char displayAlarmNumber[30];
+  21:main.c        **** unsigned int alarmEin = 0u;
+  22:main.c        **** unsigned int numberOfAlarms = 0u;
+  23:main.c        **** unsigned int alarmDurationTimes [100];
+  24:main.c        **** unsigned int time = 0;
+  25:main.c        **** 
+  26:main.c        **** int main(void)
+  27:main.c        **** {
+ARM GAS  C:\Users\urdjt\AppData\Local\Temp\ccRtXUZb.s 			page 2
+
+
+  31              		.loc 1 27 0
+  32              		.cfi_startproc
+  33              		@ args = 0, pretend = 0, frame = 0
+  34              		@ frame_needed = 0, uses_anonymous_args = 0
+  35 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+  36              		.cfi_def_cfa_offset 24
+  37              		.cfi_offset 3, -24
+  38              		.cfi_offset 4, -20
+  39              		.cfi_offset 5, -16
+  40              		.cfi_offset 6, -12
+  41              		.cfi_offset 7, -8
+  42              		.cfi_offset 14, -4
+  28:main.c        ****     CyGlobalIntEnable; /* Enable global interrupts. */
+  43              		.loc 1 28 0
+  44              		.syntax unified
+  45              	@ 28 "main.c" 1
+  46 0002 62B6     		CPSIE   i
+  47              	@ 0 "" 2
+  29:main.c        **** 
+  30:main.c        ****     /* Place your initialization/startup code here (e.g. MyInst_Start()) */
+  31:main.c        ****     VDAC8_1_Start();
+  48              		.loc 1 31 0
+  49              		.thumb
+  50              		.syntax unified
+  51 0004 FFF7FEFF 		bl	VDAC8_1_Start
+  52              	.LVL0:
+  32:main.c        ****     PGA_1_Start();
+  53              		.loc 1 32 0
+  54 0008 FFF7FEFF 		bl	PGA_1_Start
+  55              	.LVL1:
+  33:main.c        ****     ADC_SAR_1_Start();
+  56              		.loc 1 33 0
+  57 000c FFF7FEFF 		bl	ADC_SAR_1_Start
+  58              	.LVL2:
+  34:main.c        ****     ADC_SAR_1_StartConvert();
+  59              		.loc 1 34 0
+  60 0010 FFF7FEFF 		bl	ADC_SAR_1_StartConvert
+  61              	.LVL3:
+  35:main.c        ****     UART_1_Start();
+  62              		.loc 1 35 0
+  63 0014 FFF7FEFF 		bl	UART_1_Start
+  64              	.LVL4:
+  36:main.c        ****     LCD_1_Start();
+  65              		.loc 1 36 0
+  66 0018 FFF7FEFF 		bl	LCD_1_Start
+  67              	.LVL5:
+  37:main.c        ****     //Clock_1_Start();
+  38:main.c        ****     LCD_1_ClearDisplay();
+  68              		.loc 1 38 0
+  69 001c 0120     		movs	r0, #1
+  70 001e FFF7FEFF 		bl	LCD_1_WriteControl
+  71              	.LVL6:
+  39:main.c        ****     
+  40:main.c        ****     int i;
+  41:main.c        ****     for(i = 0; i < 100; i++)
+  72              		.loc 1 41 0
+  73 0022 0023     		movs	r3, #0
+ARM GAS  C:\Users\urdjt\AppData\Local\Temp\ccRtXUZb.s 			page 3
+
+
+  74 0024 04E0     		b	.L2
+  75              	.LVL7:
+  76              	.L3:
+  42:main.c        ****     {
+  43:main.c        ****         alarmDurationTimes[i] = 0; //Alle Elemente des Arrays werden mit dem Wert 0 initializiert
+  77              		.loc 1 43 0 discriminator 3
+  78 0026 0021     		movs	r1, #0
+  79 0028 5D4A     		ldr	r2, .L9+8
+  80 002a 42F82310 		str	r1, [r2, r3, lsl #2]
+  41:main.c        ****     {
+  81              		.loc 1 41 0 discriminator 3
+  82 002e 0133     		adds	r3, r3, #1
+  83              	.LVL8:
+  84              	.L2:
+  41:main.c        ****     {
+  85              		.loc 1 41 0 is_stmt 0 discriminator 1
+  86 0030 632B     		cmp	r3, #99
+  87 0032 F8DD     		ble	.L3
+  44:main.c        ****     }
+  45:main.c        ****     
+  46:main.c        ****     sprintf(displayAlarmNumber, "Total alarms: %u", numberOfAlarms); //Anzahl von Druckabfällen wi
+  88              		.loc 1 46 0 is_stmt 1
+  89 0034 5B4C     		ldr	r4, .L9+12
+  90 0036 5C4D     		ldr	r5, .L9+16
+  91 0038 2268     		ldr	r2, [r4]
+  92 003a 5C49     		ldr	r1, .L9+20
+  93 003c 2846     		mov	r0, r5
+  94 003e FFF7FEFF 		bl	sprintf
+  95              	.LVL9:
+  47:main.c        ****     LCD_1_Position(0,0);
+  96              		.loc 1 47 0
+  97 0042 0021     		movs	r1, #0
+  98 0044 0846     		mov	r0, r1
+  99 0046 FFF7FEFF 		bl	LCD_1_Position
+ 100              	.LVL10:
+  48:main.c        ****     LCD_1_PrintString(displayAlarmNumber);
+ 101              		.loc 1 48 0
+ 102 004a 2846     		mov	r0, r5
+ 103 004c FFF7FEFF 		bl	LCD_1_PrintString
+ 104              	.LVL11:
+  49:main.c        ****         
+  50:main.c        ****     sprintf(displayTime, "last alarm: %u s", alarmDurationTimes[numberOfAlarms]); //Dauer der letzt
+ 105              		.loc 1 50 0
+ 106 0050 2268     		ldr	r2, [r4]
+ 107 0052 574C     		ldr	r4, .L9+24
+ 108 0054 524B     		ldr	r3, .L9+8
+ 109 0056 53F82220 		ldr	r2, [r3, r2, lsl #2]
+ 110 005a 5649     		ldr	r1, .L9+28
+ 111 005c 2046     		mov	r0, r4
+ 112 005e FFF7FEFF 		bl	sprintf
+ 113              	.LVL12:
+  51:main.c        ****     LCD_1_Position(1,0);
+ 114              		.loc 1 51 0
+ 115 0062 0021     		movs	r1, #0
+ 116 0064 0120     		movs	r0, #1
+ 117 0066 FFF7FEFF 		bl	LCD_1_Position
+ 118              	.LVL13:
+ARM GAS  C:\Users\urdjt\AppData\Local\Temp\ccRtXUZb.s 			page 4
+
+
+  52:main.c        ****     LCD_1_PrintString(displayTime);
+ 119              		.loc 1 52 0
+ 120 006a 2046     		mov	r0, r4
+ 121 006c FFF7FEFF 		bl	LCD_1_PrintString
+ 122              	.LVL14:
+ 123              	.L4:
+  53:main.c        ****     
+  54:main.c        ****     while(1)
+  55:main.c        ****     {
+  56:main.c        ****         /*
+  57:main.c        ****           ADW Wert wird nach einer Umwandlung gespeichert
+  58:main.c        ****           und den Steuercode wird hinzugefügt.
+  59:main.c        ****           Danach werden die Daten in einem String umgewandelt
+  60:main.c        ****           und gesendet.
+  61:main.c        ****         */
+  62:main.c        ****         if (ADC_SAR_1_IsEndConversion(ADC_SAR_1_WAIT_FOR_RESULT))
+ 124              		.loc 1 62 0
+ 125 0070 0020     		movs	r0, #0
+ 126 0072 FFF7FEFF 		bl	ADC_SAR_1_IsEndConversion
+ 127              	.LVL15:
+ 128 0076 A0B1     		cbz	r0, .L5
+  63:main.c        ****         {
+  64:main.c        ****             adcResult = ADC_SAR_1_GetResult16();
+ 129              		.loc 1 64 0
+ 130 0078 FFF7FEFF 		bl	ADC_SAR_1_GetResult16
+ 131              	.LVL16:
+ 132 007c 494B     		ldr	r3, .L9+12
+  65:main.c        ****             adcResultAlarm = adcResult;
+ 133              		.loc 1 65 0
+ 134 007e D880     		strh	r0, [r3, #6]	@ movhi
+  66:main.c        ****             adcResult &= ~(0xF000);
+ 135              		.loc 1 66 0
+ 136 0080 C0F30B02 		ubfx	r2, r0, #0, #12
+  67:main.c        ****             adcResult |= 0x3000;
+ 137              		.loc 1 67 0
+ 138 0084 42F44052 		orr	r2, r2, #12288
+ 139 0088 9A80     		strh	r2, [r3, #4]	@ movhi
+  68:main.c        ****             
+  69:main.c        ****             sprintf(toSend, "%x\r\n", adcResult);
+ 140              		.loc 1 69 0
+ 141 008a 4B4C     		ldr	r4, .L9+32
+ 142 008c 4B49     		ldr	r1, .L9+36
+ 143 008e 2046     		mov	r0, r4
+ 144 0090 FFF7FEFF 		bl	sprintf
+ 145              	.LVL17:
+  70:main.c        ****             UART_1_PutString(toSend);
+ 146              		.loc 1 70 0
+ 147 0094 2046     		mov	r0, r4
+ 148 0096 FFF7FEFF 		bl	UART_1_PutString
+ 149              	.LVL18:
+  71:main.c        ****             CyDelay(300);
+ 150              		.loc 1 71 0
+ 151 009a 4FF49670 		mov	r0, #300
+ 152 009e FFF7FEFF 		bl	CyDelay
+ 153              	.LVL19:
+ 154              	.L5:
+  72:main.c        ****         }
+ARM GAS  C:\Users\urdjt\AppData\Local\Temp\ccRtXUZb.s 			page 5
+
+
+  73:main.c        ****         /*
+  74:main.c        ****           Fuer Luftdruckwerte unterhalb 900hPa bzw
+  75:main.c        ****           wird ein Alarm aktiviert
+  76:main.c        ****         */
+  77:main.c        ****         if (adcResultAlarm < 2596 && alarmEin == 0)        //wenn vorher kein Alarmprotokolla aktiv
+ 155              		.loc 1 77 0
+ 156 00a2 404B     		ldr	r3, .L9+12
+ 157 00a4 B3F90630 		ldrsh	r3, [r3, #6]
+ 158 00a8 40F62322 		movw	r2, #2595
+ 159 00ac 9342     		cmp	r3, r2
+ 160 00ae 1CDC     		bgt	.L6
+ 161              		.loc 1 77 0 is_stmt 0 discriminator 1
+ 162 00b0 3C4A     		ldr	r2, .L9+12
+ 163 00b2 9268     		ldr	r2, [r2, #8]
+ 164 00b4 CAB9     		cbnz	r2, .L6
+  78:main.c        ****         {
+  79:main.c        ****             alarmEin = 1;                           //Clocks und Counter starten. LED blinkt.
+ 165              		.loc 1 79 0 is_stmt 1
+ 166 00b6 3B4C     		ldr	r4, .L9+12
+ 167 00b8 0125     		movs	r5, #1
+ 168 00ba A560     		str	r5, [r4, #8]
+  80:main.c        ****                        
+  81:main.c        ****             //Clock_1_Start();
+  82:main.c        ****             Clock_2_Start();
+ 169              		.loc 1 82 0
+ 170 00bc FFF7FEFF 		bl	Clock_2_Start
+ 171              	.LVL20:
+  83:main.c        ****             PWM_1_Start();
+ 172              		.loc 1 83 0
+ 173 00c0 FFF7FEFF 		bl	PWM_1_Start
+ 174              	.LVL21:
+  84:main.c        ****             Counter_1_WriteCounter(0);
+ 175              		.loc 1 84 0
+ 176 00c4 0020     		movs	r0, #0
+ 177 00c6 FFF7FEFF 		bl	Counter_1_WriteCounter
+ 178              	.LVL22:
+  85:main.c        ****             Counter_1_Start();
+ 179              		.loc 1 85 0
+ 180 00ca FFF7FEFF 		bl	Counter_1_Start
+ 181              	.LVL23:
+  86:main.c        ****             //Counter_1_WriteCounter(0);
+  87:main.c        ****             
+  88:main.c        ****             LCD_1_ClearDisplay();                    //Der Display zeigt eine Warnung
+ 182              		.loc 1 88 0
+ 183 00ce 2846     		mov	r0, r5
+ 184 00d0 FFF7FEFF 		bl	LCD_1_WriteControl
+ 185              	.LVL24:
+  89:main.c        ****             LCD_1_Position(0,0);
+ 186              		.loc 1 89 0
+ 187 00d4 0021     		movs	r1, #0
+ 188 00d6 0846     		mov	r0, r1
+ 189 00d8 FFF7FEFF 		bl	LCD_1_Position
+ 190              	.LVL25:
+  90:main.c        ****             LCD_1_PrintString("Emergency!");
+ 191              		.loc 1 90 0
+ 192 00dc 3848     		ldr	r0, .L9+40
+ 193 00de FFF7FEFF 		bl	LCD_1_PrintString
+ARM GAS  C:\Users\urdjt\AppData\Local\Temp\ccRtXUZb.s 			page 6
+
+
+ 194              	.LVL26:
+  91:main.c        ****             
+  92:main.c        ****             numberOfAlarms++;                       //Der Anzahl von Druckabfaellen wird inkrementi
+ 195              		.loc 1 92 0
+ 196 00e2 2368     		ldr	r3, [r4]
+ 197 00e4 2B44     		add	r3, r3, r5
+ 198 00e6 2360     		str	r3, [r4]
+ 199 00e8 C2E7     		b	.L4
+ 200              	.L6:
+  93:main.c        ****         } else if (alarmEin == 1 && adcResultAlarm >= 2596)  //wenn die Alarm aktiv war und der Dru
+ 201              		.loc 1 93 0
+ 202 00ea 2E4A     		ldr	r2, .L9+12
+ 203 00ec 9268     		ldr	r2, [r2, #8]
+ 204 00ee 012A     		cmp	r2, #1
+ 205 00f0 BED1     		bne	.L4
+ 206              		.loc 1 93 0 is_stmt 0 discriminator 1
+ 207 00f2 40F62322 		movw	r2, #2595
+ 208 00f6 9342     		cmp	r3, r2
+ 209 00f8 BADD     		ble	.L4
+  94:main.c        ****         {
+  95:main.c        ****             counterResult = Counter_1_ReadCounter();//Anzahl der Flanken wird ausgelesen.
+ 210              		.loc 1 95 0 is_stmt 1
+ 211 00fa FFF7FEFF 		bl	Counter_1_ReadCounter
+ 212              	.LVL27:
+ 213 00fe 294D     		ldr	r5, .L9+12
+ 214 0100 E860     		str	r0, [r5, #12]
+  96:main.c        ****             alarmEin = 0;
+ 215              		.loc 1 96 0
+ 216 0102 0024     		movs	r4, #0
+ 217 0104 AC60     		str	r4, [r5, #8]
+  97:main.c        ****             
+  98:main.c        ****             PWM_1_Stop();
+ 218              		.loc 1 98 0
+ 219 0106 FFF7FEFF 		bl	PWM_1_Stop
+ 220              	.LVL28:
+  99:main.c        ****             CyDelay(10);
+ 221              		.loc 1 99 0
+ 222 010a 0A20     		movs	r0, #10
+ 223 010c FFF7FEFF 		bl	CyDelay
+ 224              	.LVL29:
+ 100:main.c        ****             Counter_1_Stop(); 
+ 225              		.loc 1 100 0
+ 226 0110 FFF7FEFF 		bl	Counter_1_Stop
+ 227              	.LVL30:
+ 101:main.c        ****             Clock_2_Stop();                         //Der Counter und der 2. Clock werden getoppt  
+ 228              		.loc 1 101 0
+ 229 0114 FFF7FEFF 		bl	Clock_2_Stop
+ 230              	.LVL31:
+ 102:main.c        **** 
+ 103:main.c        ****             time = counterResult * 0.2;             //Signal hat eine Frequenz von 5Hz --> eine Fla
+ 231              		.loc 1 103 0
+ 232 0118 E868     		ldr	r0, [r5, #12]
+ 233 011a FFF7FEFF 		bl	__aeabi_ui2d
+ 234              	.LVL32:
+ 235 011e 1EA3     		adr	r3, .L9
+ 236 0120 D3E90023 		ldrd	r2, [r3]
+ 237 0124 FFF7FEFF 		bl	__aeabi_dmul
+ARM GAS  C:\Users\urdjt\AppData\Local\Temp\ccRtXUZb.s 			page 7
+
+
+ 238              	.LVL33:
+ 239 0128 FFF7FEFF 		bl	__aeabi_d2uiz
+ 240              	.LVL34:
+ 241 012c 2861     		str	r0, [r5, #16]
+ 104:main.c        ****             alarmDurationTimes [numberOfAlarms] = time;//Dauer wird in dem zugehoerigen Position im
+ 242              		.loc 1 104 0
+ 243 012e 2B68     		ldr	r3, [r5]
+ 244 0130 1B4E     		ldr	r6, .L9+8
+ 245 0132 46F82300 		str	r0, [r6, r3, lsl #2]
+ 105:main.c        ****             
+ 106:main.c        ****             LED_1_Write(0u);
+ 246              		.loc 1 106 0
+ 247 0136 2046     		mov	r0, r4
+ 248 0138 FFF7FEFF 		bl	LED_1_Write
+ 249              	.LVL35:
+ 107:main.c        ****             LCD_1_ClearDisplay();                    //Warnung wird geloescht
+ 250              		.loc 1 107 0
+ 251 013c 0120     		movs	r0, #1
+ 252 013e FFF7FEFF 		bl	LCD_1_WriteControl
+ 253              	.LVL36:
+ 108:main.c        ****             LCD_1_Position(0,0);
+ 254              		.loc 1 108 0
+ 255 0142 2146     		mov	r1, r4
+ 256 0144 2046     		mov	r0, r4
+ 257 0146 FFF7FEFF 		bl	LCD_1_Position
+ 258              	.LVL37:
+ 109:main.c        ****             LCD_1_PrintString("Risk Fixed");        //Neue Melgung wenn Gefahr behoben wurde
+ 259              		.loc 1 109 0
+ 260 014a 1E48     		ldr	r0, .L9+44
+ 261 014c FFF7FEFF 		bl	LCD_1_PrintString
+ 262              	.LVL38:
+ 110:main.c        ****             CyDelay(2000);                          //Meldung wird nur fuer 2 Sekunden angezeigt
+ 263              		.loc 1 110 0
+ 264 0150 4FF4FA60 		mov	r0, #2000
+ 265 0154 FFF7FEFF 		bl	CyDelay
+ 266              	.LVL39:
+ 111:main.c        ****             LCD_1_ClearDisplay();
+ 267              		.loc 1 111 0
+ 268 0158 0120     		movs	r0, #1
+ 269 015a FFF7FEFF 		bl	LCD_1_WriteControl
+ 270              	.LVL40:
+ 112:main.c        ****             
+ 113:main.c        ****             sprintf(displayAlarmNumber, "Total alarms: %u", numberOfAlarms); //Anzahl von Druckabf�
+ 271              		.loc 1 113 0
+ 272 015e 124F     		ldr	r7, .L9+16
+ 273 0160 2A68     		ldr	r2, [r5]
+ 274 0162 1249     		ldr	r1, .L9+20
+ 275 0164 3846     		mov	r0, r7
+ 276 0166 FFF7FEFF 		bl	sprintf
+ 277              	.LVL41:
+ 114:main.c        ****             LCD_1_Position(0,0);
+ 278              		.loc 1 114 0
+ 279 016a 2146     		mov	r1, r4
+ 280 016c 2046     		mov	r0, r4
+ 281 016e FFF7FEFF 		bl	LCD_1_Position
+ 282              	.LVL42:
+ 115:main.c        ****             LCD_1_PrintString(displayAlarmNumber);
+ARM GAS  C:\Users\urdjt\AppData\Local\Temp\ccRtXUZb.s 			page 8
+
+
+ 283              		.loc 1 115 0
+ 284 0172 3846     		mov	r0, r7
+ 285 0174 FFF7FEFF 		bl	LCD_1_PrintString
+ 286              	.LVL43:
+ 116:main.c        ****         
+ 117:main.c        ****             sprintf(displayTime, "last alarm: %u s", alarmDurationTimes[numberOfAlarms]); //Dauer d
+ 287              		.loc 1 117 0
+ 288 0178 2B68     		ldr	r3, [r5]
+ 289 017a 0D4D     		ldr	r5, .L9+24
+ 290 017c 56F82320 		ldr	r2, [r6, r3, lsl #2]
+ 291 0180 0C49     		ldr	r1, .L9+28
+ 292 0182 2846     		mov	r0, r5
+ 293 0184 FFF7FEFF 		bl	sprintf
+ 294              	.LVL44:
+ 118:main.c        ****             LCD_1_Position(1,0);
+ 295              		.loc 1 118 0
+ 296 0188 2146     		mov	r1, r4
+ 297 018a 0120     		movs	r0, #1
+ 298 018c FFF7FEFF 		bl	LCD_1_Position
+ 299              	.LVL45:
+ 119:main.c        ****             LCD_1_PrintString(displayTime);
+ 300              		.loc 1 119 0
+ 301 0190 2846     		mov	r0, r5
+ 302 0192 FFF7FEFF 		bl	LCD_1_PrintString
+ 303              	.LVL46:
+ 304 0196 6BE7     		b	.L4
+ 305              	.L10:
+ 306              		.align	3
+ 307              	.L9:
+ 308 0198 9A999999 		.word	-1717986918
+ 309 019c 9999C93F 		.word	1070176665
+ 310 01a0 00000000 		.word	alarmDurationTimes
+ 311 01a4 00000000 		.word	.LANCHOR0
+ 312 01a8 00000000 		.word	displayAlarmNumber
+ 313 01ac 00000000 		.word	.LC0
+ 314 01b0 00000000 		.word	displayTime
+ 315 01b4 14000000 		.word	.LC1
+ 316 01b8 00000000 		.word	toSend
+ 317 01bc 28000000 		.word	.LC2
+ 318 01c0 30000000 		.word	.LC3
+ 319 01c4 3C000000 		.word	.LC4
+ 320              		.cfi_endproc
+ 321              	.LFE64:
+ 322              		.size	main, .-main
+ 323              		.global	time
+ 324              		.comm	alarmDurationTimes,400,4
+ 325              		.global	numberOfAlarms
+ 326              		.global	alarmEin
+ 327              		.comm	displayAlarmNumber,30,4
+ 328              		.comm	displayTime,30,4
+ 329              		.comm	toSend,16,4
+ 330              		.global	counterResult
+ 331              		.global	adcResultAlarm
+ 332              		.global	adcResult
+ 333              		.section	.rodata.str1.4,"aMS",%progbits,1
+ 334              		.align	2
+ 335              	.LC0:
+ARM GAS  C:\Users\urdjt\AppData\Local\Temp\ccRtXUZb.s 			page 9
+
+
+ 336 0000 546F7461 		.ascii	"Total alarms: %u\000"
+ 336      6C20616C 
+ 336      61726D73 
+ 336      3A202575 
+ 336      00
+ 337 0011 000000   		.space	3
+ 338              	.LC1:
+ 339 0014 6C617374 		.ascii	"last alarm: %u s\000"
+ 339      20616C61 
+ 339      726D3A20 
+ 339      25752073 
+ 339      00
+ 340 0025 000000   		.space	3
+ 341              	.LC2:
+ 342 0028 25780D0A 		.ascii	"%x\015\012\000"
+ 342      00
+ 343 002d 000000   		.space	3
+ 344              	.LC3:
+ 345 0030 456D6572 		.ascii	"Emergency!\000"
+ 345      67656E63 
+ 345      792100
+ 346 003b 00       		.space	1
+ 347              	.LC4:
+ 348 003c 5269736B 		.ascii	"Risk Fixed\000"
+ 348      20466978 
+ 348      656400
+ 349              		.bss
+ 350              		.align	2
+ 351              		.set	.LANCHOR0,. + 0
+ 352              		.type	numberOfAlarms, %object
+ 353              		.size	numberOfAlarms, 4
+ 354              	numberOfAlarms:
+ 355 0000 00000000 		.space	4
+ 356              		.type	adcResult, %object
+ 357              		.size	adcResult, 2
+ 358              	adcResult:
+ 359 0004 0000     		.space	2
+ 360              		.type	adcResultAlarm, %object
+ 361              		.size	adcResultAlarm, 2
+ 362              	adcResultAlarm:
+ 363 0006 0000     		.space	2
+ 364              		.type	alarmEin, %object
+ 365              		.size	alarmEin, 4
+ 366              	alarmEin:
+ 367 0008 00000000 		.space	4
+ 368              		.type	counterResult, %object
+ 369              		.size	counterResult, 4
+ 370              	counterResult:
+ 371 000c 00000000 		.space	4
+ 372              		.type	time, %object
+ 373              		.size	time, 4
+ 374              	time:
+ 375 0010 00000000 		.space	4
+ 376              		.text
+ 377              	.Letext0:
+ 378              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\4.2\\psoc creator\\import\\gnu\\arm\\5.4.
+ 379              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\4.2\\psoc creator\\import\\gnu\\arm\\5.4.
+ARM GAS  C:\Users\urdjt\AppData\Local\Temp\ccRtXUZb.s 			page 10
+
+
+ 380              		.file 4 "Generated_Source\\PSoC5/cytypes.h"
+ 381              		.file 5 "Generated_Source\\PSoC5/core_cm3.h"
+ 382              		.file 6 "Generated_Source\\PSoC5/VDAC8_1.h"
+ 383              		.file 7 "Generated_Source\\PSoC5/PGA_1.h"
+ 384              		.file 8 "Generated_Source\\PSoC5/ADC_SAR_1.h"
+ 385              		.file 9 "Generated_Source\\PSoC5/UART_1.h"
+ 386              		.file 10 "Generated_Source\\PSoC5/LCD_1.h"
+ 387              		.file 11 "c:\\program files (x86)\\cypress\\psoc creator\\4.2\\psoc creator\\import\\gnu\\arm\\5.4
+ 388              		.file 12 "Generated_Source\\PSoC5/CyLib.h"
+ 389              		.file 13 "Generated_Source\\PSoC5/Clock_2.h"
+ 390              		.file 14 "Generated_Source\\PSoC5/PWM_1.h"
+ 391              		.file 15 "Generated_Source\\PSoC5/Counter_1.h"
+ 392              		.file 16 "Generated_Source\\PSoC5/LED_1.h"
+ 393              		.section	.debug_info,"",%progbits
+ 394              	.Ldebug_info0:
+ 395 0000 B2050000 		.4byte	0x5b2
+ 396 0004 0400     		.2byte	0x4
+ 397 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 398 000a 04       		.byte	0x4
+ 399 000b 01       		.uleb128 0x1
+ 400 000c FE000000 		.4byte	.LASF51
+ 401 0010 0C       		.byte	0xc
+ 402 0011 B2020000 		.4byte	.LASF52
+ 403 0015 0F000000 		.4byte	.LASF53
+ 404 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 405 001d 00000000 		.4byte	0
+ 406 0021 00000000 		.4byte	.Ldebug_line0
+ 407 0025 02       		.uleb128 0x2
+ 408 0026 01       		.byte	0x1
+ 409 0027 06       		.byte	0x6
+ 410 0028 19030000 		.4byte	.LASF0
+ 411 002c 02       		.uleb128 0x2
+ 412 002d 01       		.byte	0x1
+ 413 002e 08       		.byte	0x8
+ 414 002f D7010000 		.4byte	.LASF1
+ 415 0033 02       		.uleb128 0x2
+ 416 0034 02       		.byte	0x2
+ 417 0035 05       		.byte	0x5
+ 418 0036 BE020000 		.4byte	.LASF2
+ 419 003a 02       		.uleb128 0x2
+ 420 003b 02       		.byte	0x2
+ 421 003c 07       		.byte	0x7
+ 422 003d 76000000 		.4byte	.LASF3
+ 423 0041 03       		.uleb128 0x3
+ 424 0042 6C000000 		.4byte	.LASF9
+ 425 0046 02       		.byte	0x2
+ 426 0047 3F       		.byte	0x3f
+ 427 0048 4C000000 		.4byte	0x4c
+ 428 004c 02       		.uleb128 0x2
+ 429 004d 04       		.byte	0x4
+ 430 004e 05       		.byte	0x5
+ 431 004f D3020000 		.4byte	.LASF4
+ 432 0053 02       		.uleb128 0x2
+ 433 0054 04       		.byte	0x4
+ 434 0055 07       		.byte	0x7
+ 435 0056 F3010000 		.4byte	.LASF5
+ 436 005a 02       		.uleb128 0x2
+ARM GAS  C:\Users\urdjt\AppData\Local\Temp\ccRtXUZb.s 			page 11
+
+
+ 437 005b 08       		.byte	0x8
+ 438 005c 05       		.byte	0x5
+ 439 005d A4020000 		.4byte	.LASF6
+ 440 0061 02       		.uleb128 0x2
+ 441 0062 08       		.byte	0x8
+ 442 0063 07       		.byte	0x7
+ 443 0064 38020000 		.4byte	.LASF7
+ 444 0068 04       		.uleb128 0x4
+ 445 0069 04       		.byte	0x4
+ 446 006a 05       		.byte	0x5
+ 447 006b 696E7400 		.ascii	"int\000"
+ 448 006f 02       		.uleb128 0x2
+ 449 0070 04       		.byte	0x4
+ 450 0071 07       		.byte	0x7
+ 451 0072 2B020000 		.4byte	.LASF8
+ 452 0076 03       		.uleb128 0x3
+ 453 0077 66020000 		.4byte	.LASF10
+ 454 007b 03       		.byte	0x3
+ 455 007c 2C       		.byte	0x2c
+ 456 007d 41000000 		.4byte	0x41
+ 457 0081 05       		.uleb128 0x5
+ 458 0082 8C010000 		.4byte	.LASF11
+ 459 0086 04       		.byte	0x4
+ 460 0087 E801     		.2byte	0x1e8
+ 461 0089 33000000 		.4byte	0x33
+ 462 008d 02       		.uleb128 0x2
+ 463 008e 04       		.byte	0x4
+ 464 008f 04       		.byte	0x4
+ 465 0090 CB000000 		.4byte	.LASF12
+ 466 0094 02       		.uleb128 0x2
+ 467 0095 08       		.byte	0x8
+ 468 0096 04       		.byte	0x4
+ 469 0097 89000000 		.4byte	.LASF13
+ 470 009b 02       		.uleb128 0x2
+ 471 009c 01       		.byte	0x1
+ 472 009d 08       		.byte	0x8
+ 473 009e B9020000 		.4byte	.LASF14
+ 474 00a2 02       		.uleb128 0x2
+ 475 00a3 08       		.byte	0x8
+ 476 00a4 04       		.byte	0x4
+ 477 00a5 FF020000 		.4byte	.LASF15
+ 478 00a9 02       		.uleb128 0x2
+ 479 00aa 04       		.byte	0x4
+ 480 00ab 07       		.byte	0x7
+ 481 00ac 6E020000 		.4byte	.LASF16
+ 482 00b0 06       		.uleb128 0x6
+ 483 00b1 05020000 		.4byte	.LASF54
+ 484 00b5 01       		.byte	0x1
+ 485 00b6 1A       		.byte	0x1a
+ 486 00b7 68000000 		.4byte	0x68
+ 487 00bb 00000000 		.4byte	.LFB64
+ 488 00bf C8010000 		.4byte	.LFE64-.LFB64
+ 489 00c3 01       		.uleb128 0x1
+ 490 00c4 9C       		.byte	0x9c
+ 491 00c5 CD030000 		.4byte	0x3cd
+ 492 00c9 07       		.uleb128 0x7
+ 493 00ca 6900     		.ascii	"i\000"
+ARM GAS  C:\Users\urdjt\AppData\Local\Temp\ccRtXUZb.s 			page 12
+
+
+ 494 00cc 01       		.byte	0x1
+ 495 00cd 28       		.byte	0x28
+ 496 00ce 68000000 		.4byte	0x68
+ 497 00d2 00000000 		.4byte	.LLST0
+ 498 00d6 08       		.uleb128 0x8
+ 499 00d7 08000000 		.4byte	.LVL0
+ 500 00db B8040000 		.4byte	0x4b8
+ 501 00df 08       		.uleb128 0x8
+ 502 00e0 0C000000 		.4byte	.LVL1
+ 503 00e4 C3040000 		.4byte	0x4c3
+ 504 00e8 08       		.uleb128 0x8
+ 505 00e9 10000000 		.4byte	.LVL2
+ 506 00ed CE040000 		.4byte	0x4ce
+ 507 00f1 08       		.uleb128 0x8
+ 508 00f2 14000000 		.4byte	.LVL3
+ 509 00f6 D9040000 		.4byte	0x4d9
+ 510 00fa 08       		.uleb128 0x8
+ 511 00fb 18000000 		.4byte	.LVL4
+ 512 00ff E4040000 		.4byte	0x4e4
+ 513 0103 08       		.uleb128 0x8
+ 514 0104 1C000000 		.4byte	.LVL5
+ 515 0108 EF040000 		.4byte	0x4ef
+ 516 010c 09       		.uleb128 0x9
+ 517 010d 22000000 		.4byte	.LVL6
+ 518 0111 FA040000 		.4byte	0x4fa
+ 519 0115 1F010000 		.4byte	0x11f
+ 520 0119 0A       		.uleb128 0xa
+ 521 011a 01       		.uleb128 0x1
+ 522 011b 50       		.byte	0x50
+ 523 011c 01       		.uleb128 0x1
+ 524 011d 31       		.byte	0x31
+ 525 011e 00       		.byte	0
+ 526 011f 09       		.uleb128 0x9
+ 527 0120 42000000 		.4byte	.LVL9
+ 528 0124 05050000 		.4byte	0x505
+ 529 0128 3C010000 		.4byte	0x13c
+ 530 012c 0A       		.uleb128 0xa
+ 531 012d 01       		.uleb128 0x1
+ 532 012e 50       		.byte	0x50
+ 533 012f 02       		.uleb128 0x2
+ 534 0130 75       		.byte	0x75
+ 535 0131 00       		.sleb128 0
+ 536 0132 0A       		.uleb128 0xa
+ 537 0133 01       		.uleb128 0x1
+ 538 0134 51       		.byte	0x51
+ 539 0135 05       		.uleb128 0x5
+ 540 0136 03       		.byte	0x3
+ 541 0137 00000000 		.4byte	.LC0
+ 542 013b 00       		.byte	0
+ 543 013c 09       		.uleb128 0x9
+ 544 013d 4A000000 		.4byte	.LVL10
+ 545 0141 10050000 		.4byte	0x510
+ 546 0145 54010000 		.4byte	0x154
+ 547 0149 0A       		.uleb128 0xa
+ 548 014a 01       		.uleb128 0x1
+ 549 014b 50       		.byte	0x50
+ 550 014c 01       		.uleb128 0x1
+ARM GAS  C:\Users\urdjt\AppData\Local\Temp\ccRtXUZb.s 			page 13
+
+
+ 551 014d 30       		.byte	0x30
+ 552 014e 0A       		.uleb128 0xa
+ 553 014f 01       		.uleb128 0x1
+ 554 0150 51       		.byte	0x51
+ 555 0151 01       		.uleb128 0x1
+ 556 0152 30       		.byte	0x30
+ 557 0153 00       		.byte	0
+ 558 0154 09       		.uleb128 0x9
+ 559 0155 50000000 		.4byte	.LVL11
+ 560 0159 1B050000 		.4byte	0x51b
+ 561 015d 68010000 		.4byte	0x168
+ 562 0161 0A       		.uleb128 0xa
+ 563 0162 01       		.uleb128 0x1
+ 564 0163 50       		.byte	0x50
+ 565 0164 02       		.uleb128 0x2
+ 566 0165 75       		.byte	0x75
+ 567 0166 00       		.sleb128 0
+ 568 0167 00       		.byte	0
+ 569 0168 09       		.uleb128 0x9
+ 570 0169 62000000 		.4byte	.LVL12
+ 571 016d 05050000 		.4byte	0x505
+ 572 0171 85010000 		.4byte	0x185
+ 573 0175 0A       		.uleb128 0xa
+ 574 0176 01       		.uleb128 0x1
+ 575 0177 50       		.byte	0x50
+ 576 0178 02       		.uleb128 0x2
+ 577 0179 74       		.byte	0x74
+ 578 017a 00       		.sleb128 0
+ 579 017b 0A       		.uleb128 0xa
+ 580 017c 01       		.uleb128 0x1
+ 581 017d 51       		.byte	0x51
+ 582 017e 05       		.uleb128 0x5
+ 583 017f 03       		.byte	0x3
+ 584 0180 14000000 		.4byte	.LC1
+ 585 0184 00       		.byte	0
+ 586 0185 09       		.uleb128 0x9
+ 587 0186 6A000000 		.4byte	.LVL13
+ 588 018a 10050000 		.4byte	0x510
+ 589 018e 9D010000 		.4byte	0x19d
+ 590 0192 0A       		.uleb128 0xa
+ 591 0193 01       		.uleb128 0x1
+ 592 0194 50       		.byte	0x50
+ 593 0195 01       		.uleb128 0x1
+ 594 0196 31       		.byte	0x31
+ 595 0197 0A       		.uleb128 0xa
+ 596 0198 01       		.uleb128 0x1
+ 597 0199 51       		.byte	0x51
+ 598 019a 01       		.uleb128 0x1
+ 599 019b 30       		.byte	0x30
+ 600 019c 00       		.byte	0
+ 601 019d 09       		.uleb128 0x9
+ 602 019e 70000000 		.4byte	.LVL14
+ 603 01a2 1B050000 		.4byte	0x51b
+ 604 01a6 B1010000 		.4byte	0x1b1
+ 605 01aa 0A       		.uleb128 0xa
+ 606 01ab 01       		.uleb128 0x1
+ 607 01ac 50       		.byte	0x50
+ARM GAS  C:\Users\urdjt\AppData\Local\Temp\ccRtXUZb.s 			page 14
+
+
+ 608 01ad 02       		.uleb128 0x2
+ 609 01ae 74       		.byte	0x74
+ 610 01af 00       		.sleb128 0
+ 611 01b0 00       		.byte	0
+ 612 01b1 09       		.uleb128 0x9
+ 613 01b2 76000000 		.4byte	.LVL15
+ 614 01b6 26050000 		.4byte	0x526
+ 615 01ba C4010000 		.4byte	0x1c4
+ 616 01be 0A       		.uleb128 0xa
+ 617 01bf 01       		.uleb128 0x1
+ 618 01c0 50       		.byte	0x50
+ 619 01c1 01       		.uleb128 0x1
+ 620 01c2 30       		.byte	0x30
+ 621 01c3 00       		.byte	0
+ 622 01c4 08       		.uleb128 0x8
+ 623 01c5 7C000000 		.4byte	.LVL16
+ 624 01c9 31050000 		.4byte	0x531
+ 625 01cd 09       		.uleb128 0x9
+ 626 01ce 94000000 		.4byte	.LVL17
+ 627 01d2 05050000 		.4byte	0x505
+ 628 01d6 EA010000 		.4byte	0x1ea
+ 629 01da 0A       		.uleb128 0xa
+ 630 01db 01       		.uleb128 0x1
+ 631 01dc 50       		.byte	0x50
+ 632 01dd 02       		.uleb128 0x2
+ 633 01de 74       		.byte	0x74
+ 634 01df 00       		.sleb128 0
+ 635 01e0 0A       		.uleb128 0xa
+ 636 01e1 01       		.uleb128 0x1
+ 637 01e2 51       		.byte	0x51
+ 638 01e3 05       		.uleb128 0x5
+ 639 01e4 03       		.byte	0x3
+ 640 01e5 28000000 		.4byte	.LC2
+ 641 01e9 00       		.byte	0
+ 642 01ea 09       		.uleb128 0x9
+ 643 01eb 9A000000 		.4byte	.LVL18
+ 644 01ef 3C050000 		.4byte	0x53c
+ 645 01f3 FE010000 		.4byte	0x1fe
+ 646 01f7 0A       		.uleb128 0xa
+ 647 01f8 01       		.uleb128 0x1
+ 648 01f9 50       		.byte	0x50
+ 649 01fa 02       		.uleb128 0x2
+ 650 01fb 74       		.byte	0x74
+ 651 01fc 00       		.sleb128 0
+ 652 01fd 00       		.byte	0
+ 653 01fe 09       		.uleb128 0x9
+ 654 01ff A2000000 		.4byte	.LVL19
+ 655 0203 47050000 		.4byte	0x547
+ 656 0207 13020000 		.4byte	0x213
+ 657 020b 0A       		.uleb128 0xa
+ 658 020c 01       		.uleb128 0x1
+ 659 020d 50       		.byte	0x50
+ 660 020e 03       		.uleb128 0x3
+ 661 020f 0A       		.byte	0xa
+ 662 0210 2C01     		.2byte	0x12c
+ 663 0212 00       		.byte	0
+ 664 0213 08       		.uleb128 0x8
+ARM GAS  C:\Users\urdjt\AppData\Local\Temp\ccRtXUZb.s 			page 15
+
+
+ 665 0214 C0000000 		.4byte	.LVL20
+ 666 0218 52050000 		.4byte	0x552
+ 667 021c 08       		.uleb128 0x8
+ 668 021d C4000000 		.4byte	.LVL21
+ 669 0221 5D050000 		.4byte	0x55d
+ 670 0225 09       		.uleb128 0x9
+ 671 0226 CA000000 		.4byte	.LVL22
+ 672 022a 68050000 		.4byte	0x568
+ 673 022e 38020000 		.4byte	0x238
+ 674 0232 0A       		.uleb128 0xa
+ 675 0233 01       		.uleb128 0x1
+ 676 0234 50       		.byte	0x50
+ 677 0235 01       		.uleb128 0x1
+ 678 0236 30       		.byte	0x30
+ 679 0237 00       		.byte	0
+ 680 0238 08       		.uleb128 0x8
+ 681 0239 CE000000 		.4byte	.LVL23
+ 682 023d 73050000 		.4byte	0x573
+ 683 0241 09       		.uleb128 0x9
+ 684 0242 D4000000 		.4byte	.LVL24
+ 685 0246 FA040000 		.4byte	0x4fa
+ 686 024a 55020000 		.4byte	0x255
+ 687 024e 0A       		.uleb128 0xa
+ 688 024f 01       		.uleb128 0x1
+ 689 0250 50       		.byte	0x50
+ 690 0251 02       		.uleb128 0x2
+ 691 0252 75       		.byte	0x75
+ 692 0253 00       		.sleb128 0
+ 693 0254 00       		.byte	0
+ 694 0255 09       		.uleb128 0x9
+ 695 0256 DC000000 		.4byte	.LVL25
+ 696 025a 10050000 		.4byte	0x510
+ 697 025e 6D020000 		.4byte	0x26d
+ 698 0262 0A       		.uleb128 0xa
+ 699 0263 01       		.uleb128 0x1
+ 700 0264 50       		.byte	0x50
+ 701 0265 01       		.uleb128 0x1
+ 702 0266 30       		.byte	0x30
+ 703 0267 0A       		.uleb128 0xa
+ 704 0268 01       		.uleb128 0x1
+ 705 0269 51       		.byte	0x51
+ 706 026a 01       		.uleb128 0x1
+ 707 026b 30       		.byte	0x30
+ 708 026c 00       		.byte	0
+ 709 026d 09       		.uleb128 0x9
+ 710 026e E2000000 		.4byte	.LVL26
+ 711 0272 1B050000 		.4byte	0x51b
+ 712 0276 84020000 		.4byte	0x284
+ 713 027a 0A       		.uleb128 0xa
+ 714 027b 01       		.uleb128 0x1
+ 715 027c 50       		.byte	0x50
+ 716 027d 05       		.uleb128 0x5
+ 717 027e 03       		.byte	0x3
+ 718 027f 30000000 		.4byte	.LC3
+ 719 0283 00       		.byte	0
+ 720 0284 08       		.uleb128 0x8
+ 721 0285 FE000000 		.4byte	.LVL27
+ARM GAS  C:\Users\urdjt\AppData\Local\Temp\ccRtXUZb.s 			page 16
+
+
+ 722 0289 7E050000 		.4byte	0x57e
+ 723 028d 08       		.uleb128 0x8
+ 724 028e 0A010000 		.4byte	.LVL28
+ 725 0292 89050000 		.4byte	0x589
+ 726 0296 09       		.uleb128 0x9
+ 727 0297 10010000 		.4byte	.LVL29
+ 728 029b 47050000 		.4byte	0x547
+ 729 029f A9020000 		.4byte	0x2a9
+ 730 02a3 0A       		.uleb128 0xa
+ 731 02a4 01       		.uleb128 0x1
+ 732 02a5 50       		.byte	0x50
+ 733 02a6 01       		.uleb128 0x1
+ 734 02a7 3A       		.byte	0x3a
+ 735 02a8 00       		.byte	0
+ 736 02a9 08       		.uleb128 0x8
+ 737 02aa 14010000 		.4byte	.LVL30
+ 738 02ae 94050000 		.4byte	0x594
+ 739 02b2 08       		.uleb128 0x8
+ 740 02b3 18010000 		.4byte	.LVL31
+ 741 02b7 9F050000 		.4byte	0x59f
+ 742 02bb 09       		.uleb128 0x9
+ 743 02bc 3C010000 		.4byte	.LVL35
+ 744 02c0 AA050000 		.4byte	0x5aa
+ 745 02c4 CF020000 		.4byte	0x2cf
+ 746 02c8 0A       		.uleb128 0xa
+ 747 02c9 01       		.uleb128 0x1
+ 748 02ca 50       		.byte	0x50
+ 749 02cb 02       		.uleb128 0x2
+ 750 02cc 74       		.byte	0x74
+ 751 02cd 00       		.sleb128 0
+ 752 02ce 00       		.byte	0
+ 753 02cf 09       		.uleb128 0x9
+ 754 02d0 42010000 		.4byte	.LVL36
+ 755 02d4 FA040000 		.4byte	0x4fa
+ 756 02d8 E2020000 		.4byte	0x2e2
+ 757 02dc 0A       		.uleb128 0xa
+ 758 02dd 01       		.uleb128 0x1
+ 759 02de 50       		.byte	0x50
+ 760 02df 01       		.uleb128 0x1
+ 761 02e0 31       		.byte	0x31
+ 762 02e1 00       		.byte	0
+ 763 02e2 09       		.uleb128 0x9
+ 764 02e3 4A010000 		.4byte	.LVL37
+ 765 02e7 10050000 		.4byte	0x510
+ 766 02eb FC020000 		.4byte	0x2fc
+ 767 02ef 0A       		.uleb128 0xa
+ 768 02f0 01       		.uleb128 0x1
+ 769 02f1 50       		.byte	0x50
+ 770 02f2 02       		.uleb128 0x2
+ 771 02f3 74       		.byte	0x74
+ 772 02f4 00       		.sleb128 0
+ 773 02f5 0A       		.uleb128 0xa
+ 774 02f6 01       		.uleb128 0x1
+ 775 02f7 51       		.byte	0x51
+ 776 02f8 02       		.uleb128 0x2
+ 777 02f9 74       		.byte	0x74
+ 778 02fa 00       		.sleb128 0
+ARM GAS  C:\Users\urdjt\AppData\Local\Temp\ccRtXUZb.s 			page 17
+
+
+ 779 02fb 00       		.byte	0
+ 780 02fc 09       		.uleb128 0x9
+ 781 02fd 50010000 		.4byte	.LVL38
+ 782 0301 1B050000 		.4byte	0x51b
+ 783 0305 13030000 		.4byte	0x313
+ 784 0309 0A       		.uleb128 0xa
+ 785 030a 01       		.uleb128 0x1
+ 786 030b 50       		.byte	0x50
+ 787 030c 05       		.uleb128 0x5
+ 788 030d 03       		.byte	0x3
+ 789 030e 3C000000 		.4byte	.LC4
+ 790 0312 00       		.byte	0
+ 791 0313 09       		.uleb128 0x9
+ 792 0314 58010000 		.4byte	.LVL39
+ 793 0318 47050000 		.4byte	0x547
+ 794 031c 28030000 		.4byte	0x328
+ 795 0320 0A       		.uleb128 0xa
+ 796 0321 01       		.uleb128 0x1
+ 797 0322 50       		.byte	0x50
+ 798 0323 03       		.uleb128 0x3
+ 799 0324 0A       		.byte	0xa
+ 800 0325 D007     		.2byte	0x7d0
+ 801 0327 00       		.byte	0
+ 802 0328 09       		.uleb128 0x9
+ 803 0329 5E010000 		.4byte	.LVL40
+ 804 032d FA040000 		.4byte	0x4fa
+ 805 0331 3B030000 		.4byte	0x33b
+ 806 0335 0A       		.uleb128 0xa
+ 807 0336 01       		.uleb128 0x1
+ 808 0337 50       		.byte	0x50
+ 809 0338 01       		.uleb128 0x1
+ 810 0339 31       		.byte	0x31
+ 811 033a 00       		.byte	0
+ 812 033b 09       		.uleb128 0x9
+ 813 033c 6A010000 		.4byte	.LVL41
+ 814 0340 05050000 		.4byte	0x505
+ 815 0344 58030000 		.4byte	0x358
+ 816 0348 0A       		.uleb128 0xa
+ 817 0349 01       		.uleb128 0x1
+ 818 034a 50       		.byte	0x50
+ 819 034b 02       		.uleb128 0x2
+ 820 034c 77       		.byte	0x77
+ 821 034d 00       		.sleb128 0
+ 822 034e 0A       		.uleb128 0xa
+ 823 034f 01       		.uleb128 0x1
+ 824 0350 51       		.byte	0x51
+ 825 0351 05       		.uleb128 0x5
+ 826 0352 03       		.byte	0x3
+ 827 0353 00000000 		.4byte	.LC0
+ 828 0357 00       		.byte	0
+ 829 0358 09       		.uleb128 0x9
+ 830 0359 72010000 		.4byte	.LVL42
+ 831 035d 10050000 		.4byte	0x510
+ 832 0361 72030000 		.4byte	0x372
+ 833 0365 0A       		.uleb128 0xa
+ 834 0366 01       		.uleb128 0x1
+ 835 0367 50       		.byte	0x50
+ARM GAS  C:\Users\urdjt\AppData\Local\Temp\ccRtXUZb.s 			page 18
+
+
+ 836 0368 02       		.uleb128 0x2
+ 837 0369 74       		.byte	0x74
+ 838 036a 00       		.sleb128 0
+ 839 036b 0A       		.uleb128 0xa
+ 840 036c 01       		.uleb128 0x1
+ 841 036d 51       		.byte	0x51
+ 842 036e 02       		.uleb128 0x2
+ 843 036f 74       		.byte	0x74
+ 844 0370 00       		.sleb128 0
+ 845 0371 00       		.byte	0
+ 846 0372 09       		.uleb128 0x9
+ 847 0373 78010000 		.4byte	.LVL43
+ 848 0377 1B050000 		.4byte	0x51b
+ 849 037b 86030000 		.4byte	0x386
+ 850 037f 0A       		.uleb128 0xa
+ 851 0380 01       		.uleb128 0x1
+ 852 0381 50       		.byte	0x50
+ 853 0382 02       		.uleb128 0x2
+ 854 0383 77       		.byte	0x77
+ 855 0384 00       		.sleb128 0
+ 856 0385 00       		.byte	0
+ 857 0386 09       		.uleb128 0x9
+ 858 0387 88010000 		.4byte	.LVL44
+ 859 038b 05050000 		.4byte	0x505
+ 860 038f A3030000 		.4byte	0x3a3
+ 861 0393 0A       		.uleb128 0xa
+ 862 0394 01       		.uleb128 0x1
+ 863 0395 50       		.byte	0x50
+ 864 0396 02       		.uleb128 0x2
+ 865 0397 75       		.byte	0x75
+ 866 0398 00       		.sleb128 0
+ 867 0399 0A       		.uleb128 0xa
+ 868 039a 01       		.uleb128 0x1
+ 869 039b 51       		.byte	0x51
+ 870 039c 05       		.uleb128 0x5
+ 871 039d 03       		.byte	0x3
+ 872 039e 14000000 		.4byte	.LC1
+ 873 03a2 00       		.byte	0
+ 874 03a3 09       		.uleb128 0x9
+ 875 03a4 90010000 		.4byte	.LVL45
+ 876 03a8 10050000 		.4byte	0x510
+ 877 03ac BC030000 		.4byte	0x3bc
+ 878 03b0 0A       		.uleb128 0xa
+ 879 03b1 01       		.uleb128 0x1
+ 880 03b2 50       		.byte	0x50
+ 881 03b3 01       		.uleb128 0x1
+ 882 03b4 31       		.byte	0x31
+ 883 03b5 0A       		.uleb128 0xa
+ 884 03b6 01       		.uleb128 0x1
+ 885 03b7 51       		.byte	0x51
+ 886 03b8 02       		.uleb128 0x2
+ 887 03b9 74       		.byte	0x74
+ 888 03ba 00       		.sleb128 0
+ 889 03bb 00       		.byte	0
+ 890 03bc 0B       		.uleb128 0xb
+ 891 03bd 96010000 		.4byte	.LVL46
+ 892 03c1 1B050000 		.4byte	0x51b
+ARM GAS  C:\Users\urdjt\AppData\Local\Temp\ccRtXUZb.s 			page 19
+
+
+ 893 03c5 0A       		.uleb128 0xa
+ 894 03c6 01       		.uleb128 0x1
+ 895 03c7 50       		.byte	0x50
+ 896 03c8 02       		.uleb128 0x2
+ 897 03c9 75       		.byte	0x75
+ 898 03ca 00       		.sleb128 0
+ 899 03cb 00       		.byte	0
+ 900 03cc 00       		.byte	0
+ 901 03cd 0C       		.uleb128 0xc
+ 902 03ce B0010000 		.4byte	.LASF17
+ 903 03d2 05       		.byte	0x5
+ 904 03d3 1207     		.2byte	0x712
+ 905 03d5 D9030000 		.4byte	0x3d9
+ 906 03d9 0D       		.uleb128 0xd
+ 907 03da 76000000 		.4byte	0x76
+ 908 03de 0E       		.uleb128 0xe
+ 909 03df 5C020000 		.4byte	.LASF18
+ 910 03e3 01       		.byte	0x1
+ 911 03e4 0F       		.byte	0xf
+ 912 03e5 81000000 		.4byte	0x81
+ 913 03e9 05       		.uleb128 0x5
+ 914 03ea 03       		.byte	0x3
+ 915 03eb 00000000 		.4byte	adcResult
+ 916 03ef 0E       		.uleb128 0xe
+ 917 03f0 5D000000 		.4byte	.LASF19
+ 918 03f4 01       		.byte	0x1
+ 919 03f5 10       		.byte	0x10
+ 920 03f6 81000000 		.4byte	0x81
+ 921 03fa 05       		.uleb128 0x5
+ 922 03fb 03       		.byte	0x3
+ 923 03fc 00000000 		.4byte	adcResultAlarm
+ 924 0400 0E       		.uleb128 0xe
+ 925 0401 0B030000 		.4byte	.LASF20
+ 926 0405 01       		.byte	0x1
+ 927 0406 11       		.byte	0x11
+ 928 0407 53000000 		.4byte	0x53
+ 929 040b 05       		.uleb128 0x5
+ 930 040c 03       		.byte	0x3
+ 931 040d 00000000 		.4byte	counterResult
+ 932 0411 0F       		.uleb128 0xf
+ 933 0412 9B000000 		.4byte	0x9b
+ 934 0416 21040000 		.4byte	0x421
+ 935 041a 10       		.uleb128 0x10
+ 936 041b A9000000 		.4byte	0xa9
+ 937 041f 0F       		.byte	0xf
+ 938 0420 00       		.byte	0
+ 939 0421 0E       		.uleb128 0xe
+ 940 0422 92010000 		.4byte	.LASF21
+ 941 0426 01       		.byte	0x1
+ 942 0427 12       		.byte	0x12
+ 943 0428 11040000 		.4byte	0x411
+ 944 042c 05       		.uleb128 0x5
+ 945 042d 03       		.byte	0x3
+ 946 042e 00000000 		.4byte	toSend
+ 947 0432 0F       		.uleb128 0xf
+ 948 0433 9B000000 		.4byte	0x9b
+ 949 0437 42040000 		.4byte	0x442
+ARM GAS  C:\Users\urdjt\AppData\Local\Temp\ccRtXUZb.s 			page 20
+
+
+ 950 043b 10       		.uleb128 0x10
+ 951 043c A9000000 		.4byte	0xa9
+ 952 0440 1D       		.byte	0x1d
+ 953 0441 00       		.byte	0
+ 954 0442 0E       		.uleb128 0xe
+ 955 0443 CB010000 		.4byte	.LASF22
+ 956 0447 01       		.byte	0x1
+ 957 0448 13       		.byte	0x13
+ 958 0449 32040000 		.4byte	0x432
+ 959 044d 05       		.uleb128 0x5
+ 960 044e 03       		.byte	0x3
+ 961 044f 00000000 		.4byte	displayTime
+ 962 0453 0E       		.uleb128 0xe
+ 963 0454 EC020000 		.4byte	.LASF23
+ 964 0458 01       		.byte	0x1
+ 965 0459 14       		.byte	0x14
+ 966 045a 32040000 		.4byte	0x432
+ 967 045e 05       		.uleb128 0x5
+ 968 045f 03       		.byte	0x3
+ 969 0460 00000000 		.4byte	displayAlarmNumber
+ 970 0464 0E       		.uleb128 0xe
+ 971 0465 16020000 		.4byte	.LASF24
+ 972 0469 01       		.byte	0x1
+ 973 046a 15       		.byte	0x15
+ 974 046b 6F000000 		.4byte	0x6f
+ 975 046f 05       		.uleb128 0x5
+ 976 0470 03       		.byte	0x3
+ 977 0471 00000000 		.4byte	alarmEin
+ 978 0475 0E       		.uleb128 0xe
+ 979 0476 00000000 		.4byte	.LASF25
+ 980 047a 01       		.byte	0x1
+ 981 047b 16       		.byte	0x16
+ 982 047c 6F000000 		.4byte	0x6f
+ 983 0480 05       		.uleb128 0x5
+ 984 0481 03       		.byte	0x3
+ 985 0482 00000000 		.4byte	numberOfAlarms
+ 986 0486 0F       		.uleb128 0xf
+ 987 0487 6F000000 		.4byte	0x6f
+ 988 048b 96040000 		.4byte	0x496
+ 989 048f 10       		.uleb128 0x10
+ 990 0490 A9000000 		.4byte	0xa9
+ 991 0494 63       		.byte	0x63
+ 992 0495 00       		.byte	0
+ 993 0496 0E       		.uleb128 0xe
+ 994 0497 B8000000 		.4byte	.LASF26
+ 995 049b 01       		.byte	0x1
+ 996 049c 17       		.byte	0x17
+ 997 049d 86040000 		.4byte	0x486
+ 998 04a1 05       		.uleb128 0x5
+ 999 04a2 03       		.byte	0x3
+ 1000 04a3 00000000 		.4byte	alarmDurationTimes
+ 1001 04a7 0E       		.uleb128 0xe
+ 1002 04a8 57020000 		.4byte	.LASF27
+ 1003 04ac 01       		.byte	0x1
+ 1004 04ad 18       		.byte	0x18
+ 1005 04ae 6F000000 		.4byte	0x6f
+ 1006 04b2 05       		.uleb128 0x5
+ARM GAS  C:\Users\urdjt\AppData\Local\Temp\ccRtXUZb.s 			page 21
+
+
+ 1007 04b3 03       		.byte	0x3
+ 1008 04b4 00000000 		.4byte	time
+ 1009 04b8 11       		.uleb128 0x11
+ 1010 04b9 E5010000 		.4byte	.LASF28
+ 1011 04bd E5010000 		.4byte	.LASF28
+ 1012 04c1 06       		.byte	0x6
+ 1013 04c2 33       		.byte	0x33
+ 1014 04c3 11       		.uleb128 0x11
+ 1015 04c4 1F020000 		.4byte	.LASF29
+ 1016 04c8 1F020000 		.4byte	.LASF29
+ 1017 04cc 07       		.byte	0x7
+ 1018 04cd 3E       		.byte	0x3e
+ 1019 04ce 11       		.uleb128 0x11
+ 1020 04cf 25030000 		.4byte	.LASF30
+ 1021 04d3 25030000 		.4byte	.LASF30
+ 1022 04d7 08       		.byte	0x8
+ 1023 04d8 34       		.byte	0x34
+ 1024 04d9 11       		.uleb128 0x11
+ 1025 04da 99010000 		.4byte	.LASF31
+ 1026 04de 99010000 		.4byte	.LASF31
+ 1027 04e2 08       		.byte	0x8
+ 1028 04e3 D1       		.byte	0xd1
+ 1029 04e4 11       		.uleb128 0x11
+ 1030 04e5 35030000 		.4byte	.LASF32
+ 1031 04e9 35030000 		.4byte	.LASF32
+ 1032 04ed 09       		.byte	0x9
+ 1033 04ee 54       		.byte	0x54
+ 1034 04ef 11       		.uleb128 0x11
+ 1035 04f0 62030000 		.4byte	.LASF33
+ 1036 04f4 62030000 		.4byte	.LASF33
+ 1037 04f8 0A       		.byte	0xa
+ 1038 04f9 38       		.byte	0x38
+ 1039 04fa 11       		.uleb128 0x11
+ 1040 04fb EB000000 		.4byte	.LASF34
+ 1041 04ff EB000000 		.4byte	.LASF34
+ 1042 0503 0A       		.byte	0xa
+ 1043 0504 3A       		.byte	0x3a
+ 1044 0505 11       		.uleb128 0x11
+ 1045 0506 4F020000 		.4byte	.LASF35
+ 1046 050a 4F020000 		.4byte	.LASF35
+ 1047 050e 0B       		.byte	0xb
+ 1048 050f E7       		.byte	0xe7
+ 1049 0510 11       		.uleb128 0x11
+ 1050 0511 83030000 		.4byte	.LASF36
+ 1051 0515 83030000 		.4byte	.LASF36
+ 1052 0519 0A       		.byte	0xa
+ 1053 051a 3D       		.byte	0x3d
+ 1054 051b 11       		.uleb128 0x11
+ 1055 051c 90000000 		.4byte	.LASF37
+ 1056 0520 90000000 		.4byte	.LASF37
+ 1057 0524 0A       		.byte	0xa
+ 1058 0525 3C       		.byte	0x3c
+ 1059 0526 11       		.uleb128 0x11
+ 1060 0527 D1000000 		.4byte	.LASF38
+ 1061 052b D1000000 		.4byte	.LASF38
+ 1062 052f 08       		.byte	0x8
+ 1063 0530 39       		.byte	0x39
+ARM GAS  C:\Users\urdjt\AppData\Local\Temp\ccRtXUZb.s 			page 22
+
+
+ 1064 0531 11       		.uleb128 0x11
+ 1065 0532 8E020000 		.4byte	.LASF39
+ 1066 0536 8E020000 		.4byte	.LASF39
+ 1067 053a 08       		.byte	0x8
+ 1068 053b 3B       		.byte	0x3b
+ 1069 053c 11       		.uleb128 0x11
+ 1070 053d 42030000 		.4byte	.LASF40
+ 1071 0541 42030000 		.4byte	.LASF40
+ 1072 0545 09       		.byte	0x9
+ 1073 0546 8B       		.byte	0x8b
+ 1074 0547 11       		.uleb128 0x11
+ 1075 0548 6E030000 		.4byte	.LASF41
+ 1076 054c 6E030000 		.4byte	.LASF41
+ 1077 0550 0C       		.byte	0xc
+ 1078 0551 76       		.byte	0x76
+ 1079 0552 11       		.uleb128 0x11
+ 1080 0553 BD010000 		.4byte	.LASF42
+ 1081 0557 BD010000 		.4byte	.LASF42
+ 1082 055b 0D       		.byte	0xd
+ 1083 055c 27       		.byte	0x27
+ 1084 055d 11       		.uleb128 0x11
+ 1085 055e 92030000 		.4byte	.LASF43
+ 1086 0562 92030000 		.4byte	.LASF43
+ 1087 0566 0E       		.byte	0xe
+ 1088 0567 92       		.byte	0x92
+ 1089 0568 11       		.uleb128 0x11
+ 1090 0569 77020000 		.4byte	.LASF44
+ 1091 056d 77020000 		.4byte	.LASF44
+ 1092 0571 0F       		.byte	0xf
+ 1093 0572 5A       		.byte	0x5a
+ 1094 0573 11       		.uleb128 0x11
+ 1095 0574 DC020000 		.4byte	.LASF45
+ 1096 0578 DC020000 		.4byte	.LASF45
+ 1097 057c 0F       		.byte	0xf
+ 1098 057d 4F       		.byte	0x4f
+ 1099 057e 11       		.uleb128 0x11
+ 1100 057f A2000000 		.4byte	.LASF46
+ 1101 0583 A2000000 		.4byte	.LASF46
+ 1102 0587 0F       		.byte	0xf
+ 1103 0588 5D       		.byte	0x5d
+ 1104 0589 11       		.uleb128 0x11
+ 1105 058a C8020000 		.4byte	.LASF47
+ 1106 058e C8020000 		.4byte	.LASF47
+ 1107 0592 0E       		.byte	0xe
+ 1108 0593 93       		.byte	0x93
+ 1109 0594 11       		.uleb128 0x11
+ 1110 0595 53030000 		.4byte	.LASF48
+ 1111 0599 53030000 		.4byte	.LASF48
+ 1112 059d 0F       		.byte	0xf
+ 1113 059e 50       		.byte	0x50
+ 1114 059f 11       		.uleb128 0x11
+ 1115 05a0 76030000 		.4byte	.LASF49
+ 1116 05a4 76030000 		.4byte	.LASF49
+ 1117 05a8 0D       		.byte	0xd
+ 1118 05a9 28       		.byte	0x28
+ 1119 05aa 11       		.uleb128 0x11
+ 1120 05ab 0A020000 		.4byte	.LASF50
+ARM GAS  C:\Users\urdjt\AppData\Local\Temp\ccRtXUZb.s 			page 23
+
+
+ 1121 05af 0A020000 		.4byte	.LASF50
+ 1122 05b3 10       		.byte	0x10
+ 1123 05b4 26       		.byte	0x26
+ 1124 05b5 00       		.byte	0
+ 1125              		.section	.debug_abbrev,"",%progbits
+ 1126              	.Ldebug_abbrev0:
+ 1127 0000 01       		.uleb128 0x1
+ 1128 0001 11       		.uleb128 0x11
+ 1129 0002 01       		.byte	0x1
+ 1130 0003 25       		.uleb128 0x25
+ 1131 0004 0E       		.uleb128 0xe
+ 1132 0005 13       		.uleb128 0x13
+ 1133 0006 0B       		.uleb128 0xb
+ 1134 0007 03       		.uleb128 0x3
+ 1135 0008 0E       		.uleb128 0xe
+ 1136 0009 1B       		.uleb128 0x1b
+ 1137 000a 0E       		.uleb128 0xe
+ 1138 000b 55       		.uleb128 0x55
+ 1139 000c 17       		.uleb128 0x17
+ 1140 000d 11       		.uleb128 0x11
+ 1141 000e 01       		.uleb128 0x1
+ 1142 000f 10       		.uleb128 0x10
+ 1143 0010 17       		.uleb128 0x17
+ 1144 0011 00       		.byte	0
+ 1145 0012 00       		.byte	0
+ 1146 0013 02       		.uleb128 0x2
+ 1147 0014 24       		.uleb128 0x24
+ 1148 0015 00       		.byte	0
+ 1149 0016 0B       		.uleb128 0xb
+ 1150 0017 0B       		.uleb128 0xb
+ 1151 0018 3E       		.uleb128 0x3e
+ 1152 0019 0B       		.uleb128 0xb
+ 1153 001a 03       		.uleb128 0x3
+ 1154 001b 0E       		.uleb128 0xe
+ 1155 001c 00       		.byte	0
+ 1156 001d 00       		.byte	0
+ 1157 001e 03       		.uleb128 0x3
+ 1158 001f 16       		.uleb128 0x16
+ 1159 0020 00       		.byte	0
+ 1160 0021 03       		.uleb128 0x3
+ 1161 0022 0E       		.uleb128 0xe
+ 1162 0023 3A       		.uleb128 0x3a
+ 1163 0024 0B       		.uleb128 0xb
+ 1164 0025 3B       		.uleb128 0x3b
+ 1165 0026 0B       		.uleb128 0xb
+ 1166 0027 49       		.uleb128 0x49
+ 1167 0028 13       		.uleb128 0x13
+ 1168 0029 00       		.byte	0
+ 1169 002a 00       		.byte	0
+ 1170 002b 04       		.uleb128 0x4
+ 1171 002c 24       		.uleb128 0x24
+ 1172 002d 00       		.byte	0
+ 1173 002e 0B       		.uleb128 0xb
+ 1174 002f 0B       		.uleb128 0xb
+ 1175 0030 3E       		.uleb128 0x3e
+ 1176 0031 0B       		.uleb128 0xb
+ 1177 0032 03       		.uleb128 0x3
+ARM GAS  C:\Users\urdjt\AppData\Local\Temp\ccRtXUZb.s 			page 24
+
+
+ 1178 0033 08       		.uleb128 0x8
+ 1179 0034 00       		.byte	0
+ 1180 0035 00       		.byte	0
+ 1181 0036 05       		.uleb128 0x5
+ 1182 0037 16       		.uleb128 0x16
+ 1183 0038 00       		.byte	0
+ 1184 0039 03       		.uleb128 0x3
+ 1185 003a 0E       		.uleb128 0xe
+ 1186 003b 3A       		.uleb128 0x3a
+ 1187 003c 0B       		.uleb128 0xb
+ 1188 003d 3B       		.uleb128 0x3b
+ 1189 003e 05       		.uleb128 0x5
+ 1190 003f 49       		.uleb128 0x49
+ 1191 0040 13       		.uleb128 0x13
+ 1192 0041 00       		.byte	0
+ 1193 0042 00       		.byte	0
+ 1194 0043 06       		.uleb128 0x6
+ 1195 0044 2E       		.uleb128 0x2e
+ 1196 0045 01       		.byte	0x1
+ 1197 0046 3F       		.uleb128 0x3f
+ 1198 0047 19       		.uleb128 0x19
+ 1199 0048 03       		.uleb128 0x3
+ 1200 0049 0E       		.uleb128 0xe
+ 1201 004a 3A       		.uleb128 0x3a
+ 1202 004b 0B       		.uleb128 0xb
+ 1203 004c 3B       		.uleb128 0x3b
+ 1204 004d 0B       		.uleb128 0xb
+ 1205 004e 27       		.uleb128 0x27
+ 1206 004f 19       		.uleb128 0x19
+ 1207 0050 49       		.uleb128 0x49
+ 1208 0051 13       		.uleb128 0x13
+ 1209 0052 8701     		.uleb128 0x87
+ 1210 0054 19       		.uleb128 0x19
+ 1211 0055 11       		.uleb128 0x11
+ 1212 0056 01       		.uleb128 0x1
+ 1213 0057 12       		.uleb128 0x12
+ 1214 0058 06       		.uleb128 0x6
+ 1215 0059 40       		.uleb128 0x40
+ 1216 005a 18       		.uleb128 0x18
+ 1217 005b 9642     		.uleb128 0x2116
+ 1218 005d 19       		.uleb128 0x19
+ 1219 005e 01       		.uleb128 0x1
+ 1220 005f 13       		.uleb128 0x13
+ 1221 0060 00       		.byte	0
+ 1222 0061 00       		.byte	0
+ 1223 0062 07       		.uleb128 0x7
+ 1224 0063 34       		.uleb128 0x34
+ 1225 0064 00       		.byte	0
+ 1226 0065 03       		.uleb128 0x3
+ 1227 0066 08       		.uleb128 0x8
+ 1228 0067 3A       		.uleb128 0x3a
+ 1229 0068 0B       		.uleb128 0xb
+ 1230 0069 3B       		.uleb128 0x3b
+ 1231 006a 0B       		.uleb128 0xb
+ 1232 006b 49       		.uleb128 0x49
+ 1233 006c 13       		.uleb128 0x13
+ 1234 006d 02       		.uleb128 0x2
+ARM GAS  C:\Users\urdjt\AppData\Local\Temp\ccRtXUZb.s 			page 25
+
+
+ 1235 006e 17       		.uleb128 0x17
+ 1236 006f 00       		.byte	0
+ 1237 0070 00       		.byte	0
+ 1238 0071 08       		.uleb128 0x8
+ 1239 0072 898201   		.uleb128 0x4109
+ 1240 0075 00       		.byte	0
+ 1241 0076 11       		.uleb128 0x11
+ 1242 0077 01       		.uleb128 0x1
+ 1243 0078 31       		.uleb128 0x31
+ 1244 0079 13       		.uleb128 0x13
+ 1245 007a 00       		.byte	0
+ 1246 007b 00       		.byte	0
+ 1247 007c 09       		.uleb128 0x9
+ 1248 007d 898201   		.uleb128 0x4109
+ 1249 0080 01       		.byte	0x1
+ 1250 0081 11       		.uleb128 0x11
+ 1251 0082 01       		.uleb128 0x1
+ 1252 0083 31       		.uleb128 0x31
+ 1253 0084 13       		.uleb128 0x13
+ 1254 0085 01       		.uleb128 0x1
+ 1255 0086 13       		.uleb128 0x13
+ 1256 0087 00       		.byte	0
+ 1257 0088 00       		.byte	0
+ 1258 0089 0A       		.uleb128 0xa
+ 1259 008a 8A8201   		.uleb128 0x410a
+ 1260 008d 00       		.byte	0
+ 1261 008e 02       		.uleb128 0x2
+ 1262 008f 18       		.uleb128 0x18
+ 1263 0090 9142     		.uleb128 0x2111
+ 1264 0092 18       		.uleb128 0x18
+ 1265 0093 00       		.byte	0
+ 1266 0094 00       		.byte	0
+ 1267 0095 0B       		.uleb128 0xb
+ 1268 0096 898201   		.uleb128 0x4109
+ 1269 0099 01       		.byte	0x1
+ 1270 009a 11       		.uleb128 0x11
+ 1271 009b 01       		.uleb128 0x1
+ 1272 009c 31       		.uleb128 0x31
+ 1273 009d 13       		.uleb128 0x13
+ 1274 009e 00       		.byte	0
+ 1275 009f 00       		.byte	0
+ 1276 00a0 0C       		.uleb128 0xc
+ 1277 00a1 34       		.uleb128 0x34
+ 1278 00a2 00       		.byte	0
+ 1279 00a3 03       		.uleb128 0x3
+ 1280 00a4 0E       		.uleb128 0xe
+ 1281 00a5 3A       		.uleb128 0x3a
+ 1282 00a6 0B       		.uleb128 0xb
+ 1283 00a7 3B       		.uleb128 0x3b
+ 1284 00a8 05       		.uleb128 0x5
+ 1285 00a9 49       		.uleb128 0x49
+ 1286 00aa 13       		.uleb128 0x13
+ 1287 00ab 3F       		.uleb128 0x3f
+ 1288 00ac 19       		.uleb128 0x19
+ 1289 00ad 3C       		.uleb128 0x3c
+ 1290 00ae 19       		.uleb128 0x19
+ 1291 00af 00       		.byte	0
+ARM GAS  C:\Users\urdjt\AppData\Local\Temp\ccRtXUZb.s 			page 26
+
+
+ 1292 00b0 00       		.byte	0
+ 1293 00b1 0D       		.uleb128 0xd
+ 1294 00b2 35       		.uleb128 0x35
+ 1295 00b3 00       		.byte	0
+ 1296 00b4 49       		.uleb128 0x49
+ 1297 00b5 13       		.uleb128 0x13
+ 1298 00b6 00       		.byte	0
+ 1299 00b7 00       		.byte	0
+ 1300 00b8 0E       		.uleb128 0xe
+ 1301 00b9 34       		.uleb128 0x34
+ 1302 00ba 00       		.byte	0
+ 1303 00bb 03       		.uleb128 0x3
+ 1304 00bc 0E       		.uleb128 0xe
+ 1305 00bd 3A       		.uleb128 0x3a
+ 1306 00be 0B       		.uleb128 0xb
+ 1307 00bf 3B       		.uleb128 0x3b
+ 1308 00c0 0B       		.uleb128 0xb
+ 1309 00c1 49       		.uleb128 0x49
+ 1310 00c2 13       		.uleb128 0x13
+ 1311 00c3 3F       		.uleb128 0x3f
+ 1312 00c4 19       		.uleb128 0x19
+ 1313 00c5 02       		.uleb128 0x2
+ 1314 00c6 18       		.uleb128 0x18
+ 1315 00c7 00       		.byte	0
+ 1316 00c8 00       		.byte	0
+ 1317 00c9 0F       		.uleb128 0xf
+ 1318 00ca 01       		.uleb128 0x1
+ 1319 00cb 01       		.byte	0x1
+ 1320 00cc 49       		.uleb128 0x49
+ 1321 00cd 13       		.uleb128 0x13
+ 1322 00ce 01       		.uleb128 0x1
+ 1323 00cf 13       		.uleb128 0x13
+ 1324 00d0 00       		.byte	0
+ 1325 00d1 00       		.byte	0
+ 1326 00d2 10       		.uleb128 0x10
+ 1327 00d3 21       		.uleb128 0x21
+ 1328 00d4 00       		.byte	0
+ 1329 00d5 49       		.uleb128 0x49
+ 1330 00d6 13       		.uleb128 0x13
+ 1331 00d7 2F       		.uleb128 0x2f
+ 1332 00d8 0B       		.uleb128 0xb
+ 1333 00d9 00       		.byte	0
+ 1334 00da 00       		.byte	0
+ 1335 00db 11       		.uleb128 0x11
+ 1336 00dc 2E       		.uleb128 0x2e
+ 1337 00dd 00       		.byte	0
+ 1338 00de 3F       		.uleb128 0x3f
+ 1339 00df 19       		.uleb128 0x19
+ 1340 00e0 3C       		.uleb128 0x3c
+ 1341 00e1 19       		.uleb128 0x19
+ 1342 00e2 6E       		.uleb128 0x6e
+ 1343 00e3 0E       		.uleb128 0xe
+ 1344 00e4 03       		.uleb128 0x3
+ 1345 00e5 0E       		.uleb128 0xe
+ 1346 00e6 3A       		.uleb128 0x3a
+ 1347 00e7 0B       		.uleb128 0xb
+ 1348 00e8 3B       		.uleb128 0x3b
+ARM GAS  C:\Users\urdjt\AppData\Local\Temp\ccRtXUZb.s 			page 27
+
+
+ 1349 00e9 0B       		.uleb128 0xb
+ 1350 00ea 00       		.byte	0
+ 1351 00eb 00       		.byte	0
+ 1352 00ec 00       		.byte	0
+ 1353              		.section	.debug_loc,"",%progbits
+ 1354              	.Ldebug_loc0:
+ 1355              	.LLST0:
+ 1356 0000 22000000 		.4byte	.LVL6
+ 1357 0004 26000000 		.4byte	.LVL7
+ 1358 0008 0200     		.2byte	0x2
+ 1359 000a 30       		.byte	0x30
+ 1360 000b 9F       		.byte	0x9f
+ 1361 000c 26000000 		.4byte	.LVL7
+ 1362 0010 41000000 		.4byte	.LVL9-1
+ 1363 0014 0100     		.2byte	0x1
+ 1364 0016 53       		.byte	0x53
+ 1365 0017 00000000 		.4byte	0
+ 1366 001b 00000000 		.4byte	0
+ 1367              		.section	.debug_aranges,"",%progbits
+ 1368 0000 1C000000 		.4byte	0x1c
+ 1369 0004 0200     		.2byte	0x2
+ 1370 0006 00000000 		.4byte	.Ldebug_info0
+ 1371 000a 04       		.byte	0x4
+ 1372 000b 00       		.byte	0
+ 1373 000c 0000     		.2byte	0
+ 1374 000e 0000     		.2byte	0
+ 1375 0010 00000000 		.4byte	.LFB64
+ 1376 0014 C8010000 		.4byte	.LFE64-.LFB64
+ 1377 0018 00000000 		.4byte	0
+ 1378 001c 00000000 		.4byte	0
+ 1379              		.section	.debug_ranges,"",%progbits
+ 1380              	.Ldebug_ranges0:
+ 1381 0000 00000000 		.4byte	.LFB64
+ 1382 0004 C8010000 		.4byte	.LFE64
+ 1383 0008 00000000 		.4byte	0
+ 1384 000c 00000000 		.4byte	0
+ 1385              		.section	.debug_line,"",%progbits
+ 1386              	.Ldebug_line0:
+ 1387 0000 A6020000 		.section	.debug_str,"MS",%progbits,1
+ 1387      02003A02 
+ 1387      00000201 
+ 1387      FB0E0D00 
+ 1387      01010101 
+ 1388              	.LASF25:
+ 1389 0000 6E756D62 		.ascii	"numberOfAlarms\000"
+ 1389      65724F66 
+ 1389      416C6172 
+ 1389      6D7300
+ 1390              	.LASF53:
+ 1391 000f 453A5C50 		.ascii	"E:\\Praktikum adaptive Sensorelektronik\\PSoC Creat"
+ 1391      72616B74 
+ 1391      696B756D 
+ 1391      20616461 
+ 1391      70746976 
+ 1392 0040 6F725C36 		.ascii	"or\\6\\Workspace01\\Teil2.cydsn\000"
+ 1392      5C576F72 
+ 1392      6B737061 
+ARM GAS  C:\Users\urdjt\AppData\Local\Temp\ccRtXUZb.s 			page 28
+
+
+ 1392      63653031 
+ 1392      5C546569 
+ 1393              	.LASF19:
+ 1394 005d 61646352 		.ascii	"adcResultAlarm\000"
+ 1394      6573756C 
+ 1394      74416C61 
+ 1394      726D00
+ 1395              	.LASF9:
+ 1396 006c 5F5F696E 		.ascii	"__int32_t\000"
+ 1396      7433325F 
+ 1396      7400
+ 1397              	.LASF3:
+ 1398 0076 73686F72 		.ascii	"short unsigned int\000"
+ 1398      7420756E 
+ 1398      7369676E 
+ 1398      65642069 
+ 1398      6E7400
+ 1399              	.LASF13:
+ 1400 0089 646F7562 		.ascii	"double\000"
+ 1400      6C6500
+ 1401              	.LASF37:
+ 1402 0090 4C43445F 		.ascii	"LCD_1_PrintString\000"
+ 1402      315F5072 
+ 1402      696E7453 
+ 1402      7472696E 
+ 1402      6700
+ 1403              	.LASF46:
+ 1404 00a2 436F756E 		.ascii	"Counter_1_ReadCounter\000"
+ 1404      7465725F 
+ 1404      315F5265 
+ 1404      6164436F 
+ 1404      756E7465 
+ 1405              	.LASF26:
+ 1406 00b8 616C6172 		.ascii	"alarmDurationTimes\000"
+ 1406      6D447572 
+ 1406      6174696F 
+ 1406      6E54696D 
+ 1406      657300
+ 1407              	.LASF12:
+ 1408 00cb 666C6F61 		.ascii	"float\000"
+ 1408      7400
+ 1409              	.LASF38:
+ 1410 00d1 4144435F 		.ascii	"ADC_SAR_1_IsEndConversion\000"
+ 1410      5341525F 
+ 1410      315F4973 
+ 1410      456E6443 
+ 1410      6F6E7665 
+ 1411              	.LASF34:
+ 1412 00eb 4C43445F 		.ascii	"LCD_1_WriteControl\000"
+ 1412      315F5772 
+ 1412      69746543 
+ 1412      6F6E7472 
+ 1412      6F6C00
+ 1413              	.LASF51:
+ 1414 00fe 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 1414      43313120 
+ 1414      352E342E 
+ARM GAS  C:\Users\urdjt\AppData\Local\Temp\ccRtXUZb.s 			page 29
+
+
+ 1414      31203230 
+ 1414      31363036 
+ 1415 0131 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m3 -mthumb -g -O"
+ 1415      20726576 
+ 1415      6973696F 
+ 1415      6E203233 
+ 1415      37373135 
+ 1416 0164 67202D66 		.ascii	"g -ffunction-sections -ffat-lto-objects\000"
+ 1416      66756E63 
+ 1416      74696F6E 
+ 1416      2D736563 
+ 1416      74696F6E 
+ 1417              	.LASF11:
+ 1418 018c 696E7431 		.ascii	"int16\000"
+ 1418      3600
+ 1419              	.LASF21:
+ 1420 0192 746F5365 		.ascii	"toSend\000"
+ 1420      6E6400
+ 1421              	.LASF31:
+ 1422 0199 4144435F 		.ascii	"ADC_SAR_1_StartConvert\000"
+ 1422      5341525F 
+ 1422      315F5374 
+ 1422      61727443 
+ 1422      6F6E7665 
+ 1423              	.LASF17:
+ 1424 01b0 49544D5F 		.ascii	"ITM_RxBuffer\000"
+ 1424      52784275 
+ 1424      66666572 
+ 1424      00
+ 1425              	.LASF42:
+ 1426 01bd 436C6F63 		.ascii	"Clock_2_Start\000"
+ 1426      6B5F325F 
+ 1426      53746172 
+ 1426      7400
+ 1427              	.LASF22:
+ 1428 01cb 64697370 		.ascii	"displayTime\000"
+ 1428      6C617954 
+ 1428      696D6500 
+ 1429              	.LASF1:
+ 1430 01d7 756E7369 		.ascii	"unsigned char\000"
+ 1430      676E6564 
+ 1430      20636861 
+ 1430      7200
+ 1431              	.LASF28:
+ 1432 01e5 56444143 		.ascii	"VDAC8_1_Start\000"
+ 1432      385F315F 
+ 1432      53746172 
+ 1432      7400
+ 1433              	.LASF5:
+ 1434 01f3 6C6F6E67 		.ascii	"long unsigned int\000"
+ 1434      20756E73 
+ 1434      69676E65 
+ 1434      6420696E 
+ 1434      7400
+ 1435              	.LASF54:
+ 1436 0205 6D61696E 		.ascii	"main\000"
+ 1436      00
+ARM GAS  C:\Users\urdjt\AppData\Local\Temp\ccRtXUZb.s 			page 30
+
+
+ 1437              	.LASF50:
+ 1438 020a 4C45445F 		.ascii	"LED_1_Write\000"
+ 1438      315F5772 
+ 1438      69746500 
+ 1439              	.LASF24:
+ 1440 0216 616C6172 		.ascii	"alarmEin\000"
+ 1440      6D45696E 
+ 1440      00
+ 1441              	.LASF29:
+ 1442 021f 5047415F 		.ascii	"PGA_1_Start\000"
+ 1442      315F5374 
+ 1442      61727400 
+ 1443              	.LASF8:
+ 1444 022b 756E7369 		.ascii	"unsigned int\000"
+ 1444      676E6564 
+ 1444      20696E74 
+ 1444      00
+ 1445              	.LASF7:
+ 1446 0238 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 1446      206C6F6E 
+ 1446      6720756E 
+ 1446      7369676E 
+ 1446      65642069 
+ 1447              	.LASF35:
+ 1448 024f 73707269 		.ascii	"sprintf\000"
+ 1448      6E746600 
+ 1449              	.LASF27:
+ 1450 0257 74696D65 		.ascii	"time\000"
+ 1450      00
+ 1451              	.LASF18:
+ 1452 025c 61646352 		.ascii	"adcResult\000"
+ 1452      6573756C 
+ 1452      7400
+ 1453              	.LASF10:
+ 1454 0266 696E7433 		.ascii	"int32_t\000"
+ 1454      325F7400 
+ 1455              	.LASF16:
+ 1456 026e 73697A65 		.ascii	"sizetype\000"
+ 1456      74797065 
+ 1456      00
+ 1457              	.LASF44:
+ 1458 0277 436F756E 		.ascii	"Counter_1_WriteCounter\000"
+ 1458      7465725F 
+ 1458      315F5772 
+ 1458      69746543 
+ 1458      6F756E74 
+ 1459              	.LASF39:
+ 1460 028e 4144435F 		.ascii	"ADC_SAR_1_GetResult16\000"
+ 1460      5341525F 
+ 1460      315F4765 
+ 1460      74526573 
+ 1460      756C7431 
+ 1461              	.LASF6:
+ 1462 02a4 6C6F6E67 		.ascii	"long long int\000"
+ 1462      206C6F6E 
+ 1462      6720696E 
+ 1462      7400
+ARM GAS  C:\Users\urdjt\AppData\Local\Temp\ccRtXUZb.s 			page 31
+
+
+ 1463              	.LASF52:
+ 1464 02b2 6D61696E 		.ascii	"main.c\000"
+ 1464      2E6300
+ 1465              	.LASF14:
+ 1466 02b9 63686172 		.ascii	"char\000"
+ 1466      00
+ 1467              	.LASF2:
+ 1468 02be 73686F72 		.ascii	"short int\000"
+ 1468      7420696E 
+ 1468      7400
+ 1469              	.LASF47:
+ 1470 02c8 50574D5F 		.ascii	"PWM_1_Stop\000"
+ 1470      315F5374 
+ 1470      6F7000
+ 1471              	.LASF4:
+ 1472 02d3 6C6F6E67 		.ascii	"long int\000"
+ 1472      20696E74 
+ 1472      00
+ 1473              	.LASF45:
+ 1474 02dc 436F756E 		.ascii	"Counter_1_Start\000"
+ 1474      7465725F 
+ 1474      315F5374 
+ 1474      61727400 
+ 1475              	.LASF23:
+ 1476 02ec 64697370 		.ascii	"displayAlarmNumber\000"
+ 1476      6C617941 
+ 1476      6C61726D 
+ 1476      4E756D62 
+ 1476      657200
+ 1477              	.LASF15:
+ 1478 02ff 6C6F6E67 		.ascii	"long double\000"
+ 1478      20646F75 
+ 1478      626C6500 
+ 1479              	.LASF20:
+ 1480 030b 636F756E 		.ascii	"counterResult\000"
+ 1480      74657252 
+ 1480      6573756C 
+ 1480      7400
+ 1481              	.LASF0:
+ 1482 0319 7369676E 		.ascii	"signed char\000"
+ 1482      65642063 
+ 1482      68617200 
+ 1483              	.LASF30:
+ 1484 0325 4144435F 		.ascii	"ADC_SAR_1_Start\000"
+ 1484      5341525F 
+ 1484      315F5374 
+ 1484      61727400 
+ 1485              	.LASF32:
+ 1486 0335 55415254 		.ascii	"UART_1_Start\000"
+ 1486      5F315F53 
+ 1486      74617274 
+ 1486      00
+ 1487              	.LASF40:
+ 1488 0342 55415254 		.ascii	"UART_1_PutString\000"
+ 1488      5F315F50 
+ 1488      75745374 
+ 1488      72696E67 
+ARM GAS  C:\Users\urdjt\AppData\Local\Temp\ccRtXUZb.s 			page 32
+
+
+ 1488      00
+ 1489              	.LASF48:
+ 1490 0353 436F756E 		.ascii	"Counter_1_Stop\000"
+ 1490      7465725F 
+ 1490      315F5374 
+ 1490      6F7000
+ 1491              	.LASF33:
+ 1492 0362 4C43445F 		.ascii	"LCD_1_Start\000"
+ 1492      315F5374 
+ 1492      61727400 
+ 1493              	.LASF41:
+ 1494 036e 43794465 		.ascii	"CyDelay\000"
+ 1494      6C617900 
+ 1495              	.LASF49:
+ 1496 0376 436C6F63 		.ascii	"Clock_2_Stop\000"
+ 1496      6B5F325F 
+ 1496      53746F70 
+ 1496      00
+ 1497              	.LASF36:
+ 1498 0383 4C43445F 		.ascii	"LCD_1_Position\000"
+ 1498      315F506F 
+ 1498      73697469 
+ 1498      6F6E00
+ 1499              	.LASF43:
+ 1500 0392 50574D5F 		.ascii	"PWM_1_Start\000"
+ 1500      315F5374 
+ 1500      61727400 
+ 1501              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran

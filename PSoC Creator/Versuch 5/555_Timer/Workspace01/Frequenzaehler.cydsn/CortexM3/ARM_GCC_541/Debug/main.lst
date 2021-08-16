@@ -1,0 +1,1419 @@
+ARM GAS  C:\Users\urdjt\AppData\Local\Temp\cc3iSUaz.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"main.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text.main,"ax",%progbits
+  20              		.align	2
+  21              		.global	main
+  22              		.thumb
+  23              		.thumb_func
+  24              		.type	main, %function
+  25              	main:
+  26              	.LFB64:
+  27              		.file 1 "main.c"
+   1:main.c        **** /* ========================================
+   2:main.c        ****  *
+   3:main.c        ****  * Copyright YOUR COMPANY, THE YEAR
+   4:main.c        ****  * All Rights Reserved
+   5:main.c        ****  * UNPUBLISHED, LICENSED SOFTWARE.
+   6:main.c        ****  *
+   7:main.c        ****  * CONFIDENTIAL AND PROPRIETARY INFORMATION
+   8:main.c        ****  * WHICH IS THE PROPERTY OF your company.
+   9:main.c        ****  *
+  10:main.c        ****  * ========================================
+  11:main.c        **** */
+  12:main.c        **** #include "project.h"
+  13:main.c        **** #include<stdio.h>
+  14:main.c        **** 
+  15:main.c        **** int global = 0;
+  16:main.c        **** uint16 isrCounter = 0; //Zaehlt Anzahl von Interrupts
+  17:main.c        **** int16 freqCounter = 0; //Zaehlt steigenden Flanken aus dem 555-Timer
+  18:main.c        **** int16 prevFreqCount = 0;
+  19:main.c        **** char toPrint[4];
+  20:main.c        **** char toTransmit[16];
+  21:main.c        **** uint16 counterDifference = 0u;
+  22:main.c        **** int16 temp;
+  23:main.c        **** 
+  24:main.c        **** int main(void)
+  25:main.c        **** {
+  28              		.loc 1 25 0
+  29              		.cfi_startproc
+  30              		@ Volatile: function does not return.
+  31              		@ args = 0, pretend = 0, frame = 0
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+ARM GAS  C:\Users\urdjt\AppData\Local\Temp\cc3iSUaz.s 			page 2
+
+
+  33 0000 08B5     		push	{r3, lr}
+  34              		.cfi_def_cfa_offset 8
+  35              		.cfi_offset 3, -8
+  36              		.cfi_offset 14, -4
+  26:main.c        ****     CyGlobalIntEnable; /* Enable global interrupts. */
+  37              		.loc 1 26 0
+  38              		.syntax unified
+  39              	@ 26 "main.c" 1
+  40 0002 62B6     		CPSIE   i
+  41              	@ 0 "" 2
+  27:main.c        **** 
+  28:main.c        ****     /* Place your initialization/startup code here (e.g. MyInst_Start()) */
+  29:main.c        ****     Clock_1_Start();//Clocks Starten
+  42              		.loc 1 29 0
+  43              		.thumb
+  44              		.syntax unified
+  45 0004 FFF7FEFF 		bl	Clock_1_Start
+  46              	.LVL0:
+  30:main.c        ****     Clock_2_Start();
+  47              		.loc 1 30 0
+  48 0008 FFF7FEFF 		bl	Clock_2_Start
+  49              	.LVL1:
+  31:main.c        ****     
+  32:main.c        ****     VDAC8_1_Start();//ADCs fuer die Trigger und threshold spannungen
+  50              		.loc 1 32 0
+  51 000c FFF7FEFF 		bl	VDAC8_1_Start
+  52              	.LVL2:
+  33:main.c        ****     VDAC8_2_Start();
+  53              		.loc 1 33 0
+  54 0010 FFF7FEFF 		bl	VDAC8_2_Start
+  55              	.LVL3:
+  34:main.c        ****     
+  35:main.c        ****     Comp_1_Start(); //Komparatoren Starten
+  56              		.loc 1 35 0
+  57 0014 FFF7FEFF 		bl	Comp_1_Start
+  58              	.LVL4:
+  36:main.c        ****     Comp_2_Start();
+  59              		.loc 1 36 0
+  60 0018 FFF7FEFF 		bl	Comp_2_Start
+  61              	.LVL5:
+  37:main.c        ****     
+  38:main.c        ****     PWM_1_Start(); //PWM und interrupt 
+  62              		.loc 1 38 0
+  63 001c FFF7FEFF 		bl	PWM_1_Start
+  64              	.LVL6:
+  39:main.c        ****     isr_1_Start();
+  65              		.loc 1 39 0
+  66 0020 FFF7FEFF 		bl	isr_1_Start
+  67              	.LVL7:
+  40:main.c        ****     
+  41:main.c        ****     Counter_1_Start();// Counter
+  68              		.loc 1 41 0
+  69 0024 FFF7FEFF 		bl	Counter_1_Start
+  70              	.LVL8:
+  42:main.c        ****     
+  43:main.c        ****     UART_1_Start();
+  71              		.loc 1 43 0
+ARM GAS  C:\Users\urdjt\AppData\Local\Temp\cc3iSUaz.s 			page 3
+
+
+  72 0028 FFF7FEFF 		bl	UART_1_Start
+  73              	.LVL9:
+  44:main.c        ****     LCD_1_Start();  //LCD
+  74              		.loc 1 44 0
+  75 002c FFF7FEFF 		bl	LCD_1_Start
+  76              	.LVL10:
+  77              	.L6:
+  45:main.c        ****     
+  46:main.c        ****     
+  47:main.c        ****     while(1)
+  48:main.c        ****     {
+  49:main.c        ****         if (global == 1)    // wird ein Interrupt aufgeloest, dann wird der Flag reseted, ein Count
+  78              		.loc 1 49 0
+  79 0030 344B     		ldr	r3, .L9
+  80 0032 1B68     		ldr	r3, [r3]
+  81 0034 012B     		cmp	r3, #1
+  82 0036 5AD1     		bne	.L2
+  50:main.c        ****                                //und den Status Register gelesen, um den Interrupt Ausgang zurueck 
+  51:main.c        ****         {
+  52:main.c        ****             global = 0;
+  83              		.loc 1 52 0
+  84 0038 324C     		ldr	r4, .L9
+  85 003a 0023     		movs	r3, #0
+  86 003c 2360     		str	r3, [r4]
+  53:main.c        ****             isrCounter++;
+  87              		.loc 1 53 0
+  88 003e A388     		ldrh	r3, [r4, #4]
+  89 0040 0133     		adds	r3, r3, #1
+  90 0042 A380     		strh	r3, [r4, #4]	@ movhi
+  54:main.c        ****             PWM_1_ReadStatusRegister();
+  91              		.loc 1 54 0
+  92 0044 FFF7FEFF 		bl	PWM_1_ReadStatusRegister
+  93              	.LVL11:
+  55:main.c        ****             prevFreqCount = freqCounter; //Vorherigen Wert wird gespeichert
+  94              		.loc 1 55 0
+  95 0048 2389     		ldrh	r3, [r4, #8]
+  96 004a E380     		strh	r3, [r4, #6]	@ movhi
+  56:main.c        ****             freqCounter = Counter_1_ReadCounter(); //Den Wert wird ausgelesen (Capture --> reload C
+  97              		.loc 1 56 0
+  98 004c FFF7FEFF 		bl	Counter_1_ReadCounter
+  99              	.LVL12:
+ 100 0050 00B2     		sxth	r0, r0
+ 101 0052 2081     		strh	r0, [r4, #8]	@ movhi
+  57:main.c        ****             
+  58:main.c        ****             //Falsche Werte nicht benutzen
+  59:main.c        ****             if(freqCounter > 4095)
+ 102              		.loc 1 59 0
+ 103 0054 B0F5805F 		cmp	r0, #4096
+ 104 0058 01DB     		blt	.L3
+  60:main.c        ****             {
+  61:main.c        ****                 freqCounter = prevFreqCount;
+ 105              		.loc 1 61 0
+ 106 005a E288     		ldrh	r2, [r4, #6]
+ 107 005c 2281     		strh	r2, [r4, #8]	@ movhi
+ 108              	.L3:
+  62:main.c        ****             }
+  63:main.c        ****             Counter_1_WriteCounter(0);
+ARM GAS  C:\Users\urdjt\AppData\Local\Temp\cc3iSUaz.s 			page 4
+
+
+ 109              		.loc 1 63 0
+ 110 005e 0020     		movs	r0, #0
+ 111 0060 FFF7FEFF 		bl	Counter_1_WriteCounter
+ 112              	.LVL13:
+  64:main.c        ****             
+  65:main.c        ****             //Berechnung des Betrags der Differenz
+  66:main.c        ****             if (freqCounter >= prevFreqCount)
+ 113              		.loc 1 66 0
+ 114 0064 274B     		ldr	r3, .L9
+ 115 0066 B3F90820 		ldrsh	r2, [r3, #8]
+ 116 006a B3F90630 		ldrsh	r3, [r3, #6]
+ 117 006e 9A42     		cmp	r2, r3
+ 118 0070 08DB     		blt	.L4
+  67:main.c        ****             {
+  68:main.c        ****                 counterDifference = freqCounter - prevFreqCount;
+ 119              		.loc 1 68 0
+ 120 0072 D21A     		subs	r2, r2, r3
+ 121 0074 92B2     		uxth	r2, r2
+ 122 0076 234B     		ldr	r3, .L9
+ 123 0078 5A81     		strh	r2, [r3, #10]	@ movhi
+  69:main.c        ****                 sprintf(toPrint, "+%u", counterDifference);
+ 124              		.loc 1 69 0
+ 125 007a 2349     		ldr	r1, .L9+4
+ 126 007c 2348     		ldr	r0, .L9+8
+ 127 007e FFF7FEFF 		bl	sprintf
+ 128              	.LVL14:
+ 129 0082 07E0     		b	.L5
+ 130              	.L4:
+  70:main.c        ****            
+  71:main.c        ****             } else
+  72:main.c        ****             {
+  73:main.c        ****                 counterDifference = prevFreqCount - freqCounter;
+ 131              		.loc 1 73 0
+ 132 0084 9A1A     		subs	r2, r3, r2
+ 133 0086 92B2     		uxth	r2, r2
+ 134 0088 1E4B     		ldr	r3, .L9
+ 135 008a 5A81     		strh	r2, [r3, #10]	@ movhi
+  74:main.c        ****                 sprintf(toPrint, "-%u", counterDifference);
+ 136              		.loc 1 74 0
+ 137 008c 2049     		ldr	r1, .L9+12
+ 138 008e 1F48     		ldr	r0, .L9+8
+ 139 0090 FFF7FEFF 		bl	sprintf
+ 140              	.LVL15:
+ 141              	.L5:
+  75:main.c        ****             }
+  76:main.c        ****             
+  77:main.c        ****             //Steuercode einfuegen und Daten senden
+  78:main.c        ****             temp = freqCounter;   
+ 142              		.loc 1 78 0
+ 143 0094 1B4C     		ldr	r4, .L9
+ 144 0096 B4F90820 		ldrsh	r2, [r4, #8]
+  79:main.c        ****             temp &= ~0xF000;
+ 145              		.loc 1 79 0
+ 146 009a C2F30B02 		ubfx	r2, r2, #0, #12
+  80:main.c        ****             temp |= 0x2000;
+ 147              		.loc 1 80 0
+ 148 009e 42F40052 		orr	r2, r2, #8192
+ARM GAS  C:\Users\urdjt\AppData\Local\Temp\cc3iSUaz.s 			page 5
+
+
+ 149 00a2 1C4B     		ldr	r3, .L9+16
+ 150 00a4 1A80     		strh	r2, [r3]	@ movhi
+  81:main.c        ****             sprintf(toTransmit, "%x\r\n" ,temp);
+ 151              		.loc 1 81 0
+ 152 00a6 1C4D     		ldr	r5, .L9+20
+ 153 00a8 1C49     		ldr	r1, .L9+24
+ 154 00aa 2846     		mov	r0, r5
+ 155 00ac FFF7FEFF 		bl	sprintf
+ 156              	.LVL16:
+  82:main.c        ****             UART_1_PutString(toTransmit);
+ 157              		.loc 1 82 0
+ 158 00b0 2846     		mov	r0, r5
+ 159 00b2 FFF7FEFF 		bl	UART_1_PutString
+ 160              	.LVL17:
+  83:main.c        ****             
+  84:main.c        ****             //Auf dem LCD werden die Anzahl von augeloesten Interrupts angezeigt
+  85:main.c        ****             LCD_1_Position(0,0);    
+ 161              		.loc 1 85 0
+ 162 00b6 0021     		movs	r1, #0
+ 163 00b8 0846     		mov	r0, r1
+ 164 00ba FFF7FEFF 		bl	LCD_1_Position
+ 165              	.LVL18:
+  86:main.c        ****             LCD_1_PrintNumber(isrCounter);
+ 166              		.loc 1 86 0
+ 167 00be A088     		ldrh	r0, [r4, #4]
+ 168 00c0 FFF7FEFF 		bl	LCD_1_PrintU32Number
+ 169              	.LVL19:
+  87:main.c        ****             
+  88:main.c        ****             //Auf dem LCD wird die Anzahl von steigenden Flanken vor ein Interrupt angezeigt
+  89:main.c        ****             LCD_1_Position(1,0);    
+ 170              		.loc 1 89 0
+ 171 00c4 0021     		movs	r1, #0
+ 172 00c6 0120     		movs	r0, #1
+ 173 00c8 FFF7FEFF 		bl	LCD_1_Position
+ 174              	.LVL20:
+  90:main.c        ****             LCD_1_PrintNumber(freqCounter);
+ 175              		.loc 1 90 0
+ 176 00cc 2089     		ldrh	r0, [r4, #8]
+ 177 00ce FFF7FEFF 		bl	LCD_1_PrintU32Number
+ 178              	.LVL21:
+  91:main.c        ****             
+  92:main.c        ****             //Auf dem LCD wird die letzte Anzahl von steigenden Flanken vor ein Interrupt angezeigt
+  93:main.c        ****             LCD_1_Position(1,7);
+ 179              		.loc 1 93 0
+ 180 00d2 0721     		movs	r1, #7
+ 181 00d4 0120     		movs	r0, #1
+ 182 00d6 FFF7FEFF 		bl	LCD_1_Position
+ 183              	.LVL22:
+  94:main.c        ****             LCD_1_PrintNumber(prevFreqCount);
+ 184              		.loc 1 94 0
+ 185 00da E088     		ldrh	r0, [r4, #6]
+ 186 00dc FFF7FEFF 		bl	LCD_1_PrintU32Number
+ 187              	.LVL23:
+  95:main.c        ****             
+  96:main.c        ****             //Differenz auf dem LCD anzeigen
+  97:main.c        ****             LCD_1_Position(0, 7);
+ 188              		.loc 1 97 0
+ARM GAS  C:\Users\urdjt\AppData\Local\Temp\cc3iSUaz.s 			page 6
+
+
+ 189 00e0 0721     		movs	r1, #7
+ 190 00e2 0020     		movs	r0, #0
+ 191 00e4 FFF7FEFF 		bl	LCD_1_Position
+ 192              	.LVL24:
+  98:main.c        ****             LCD_1_PrintString(toPrint);
+ 193              		.loc 1 98 0
+ 194 00e8 0848     		ldr	r0, .L9+8
+ 195 00ea FFF7FEFF 		bl	LCD_1_PrintString
+ 196              	.LVL25:
+ 197              	.L2:
+  99:main.c        ****         }  
+ 100:main.c        ****         
+ 101:main.c        ****         
+ 102:main.c        ****         
+ 103:main.c        **** 
+ 104:main.c        ****        
+ 105:main.c        ****         
+ 106:main.c        ****         
+ 107:main.c        ****         if(isrCounter == 30000) //Der Interrupt Counter wird eventuell reseted
+ 198              		.loc 1 107 0
+ 199 00ee 054B     		ldr	r3, .L9
+ 200 00f0 9A88     		ldrh	r2, [r3, #4]
+ 201 00f2 47F23053 		movw	r3, #30000
+ 202 00f6 9A42     		cmp	r2, r3
+ 203 00f8 9AD1     		bne	.L6
+ 108:main.c        ****         {
+ 109:main.c        ****             isrCounter = 0;
+ 204              		.loc 1 109 0
+ 205 00fa 0022     		movs	r2, #0
+ 206 00fc 014B     		ldr	r3, .L9
+ 207 00fe 9A80     		strh	r2, [r3, #4]	@ movhi
+ 208 0100 96E7     		b	.L6
+ 209              	.L10:
+ 210 0102 00BF     		.align	2
+ 211              	.L9:
+ 212 0104 00000000 		.word	.LANCHOR0
+ 213 0108 00000000 		.word	.LC0
+ 214 010c 00000000 		.word	toPrint
+ 215 0110 04000000 		.word	.LC1
+ 216 0114 00000000 		.word	temp
+ 217 0118 00000000 		.word	toTransmit
+ 218 011c 08000000 		.word	.LC2
+ 219              		.cfi_endproc
+ 220              	.LFE64:
+ 221              		.size	main, .-main
+ 222              		.comm	temp,2,2
+ 223              		.global	counterDifference
+ 224              		.comm	toTransmit,16,4
+ 225              		.comm	toPrint,4,4
+ 226              		.global	prevFreqCount
+ 227              		.global	freqCounter
+ 228              		.global	isrCounter
+ 229              		.global	global
+ 230              		.section	.rodata.str1.4,"aMS",%progbits,1
+ 231              		.align	2
+ 232              	.LC0:
+ 233 0000 2B257500 		.ascii	"+%u\000"
+ARM GAS  C:\Users\urdjt\AppData\Local\Temp\cc3iSUaz.s 			page 7
+
+
+ 234              	.LC1:
+ 235 0004 2D257500 		.ascii	"-%u\000"
+ 236              	.LC2:
+ 237 0008 25780D0A 		.ascii	"%x\015\012\000"
+ 237      00
+ 238              		.bss
+ 239              		.align	2
+ 240              		.set	.LANCHOR0,. + 0
+ 241              		.type	global, %object
+ 242              		.size	global, 4
+ 243              	global:
+ 244 0000 00000000 		.space	4
+ 245              		.type	isrCounter, %object
+ 246              		.size	isrCounter, 2
+ 247              	isrCounter:
+ 248 0004 0000     		.space	2
+ 249              		.type	prevFreqCount, %object
+ 250              		.size	prevFreqCount, 2
+ 251              	prevFreqCount:
+ 252 0006 0000     		.space	2
+ 253              		.type	freqCounter, %object
+ 254              		.size	freqCounter, 2
+ 255              	freqCounter:
+ 256 0008 0000     		.space	2
+ 257              		.type	counterDifference, %object
+ 258              		.size	counterDifference, 2
+ 259              	counterDifference:
+ 260 000a 0000     		.space	2
+ 261              		.text
+ 262              	.Letext0:
+ 263              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\4.2\\psoc creator\\import\\gnu\\arm\\5.4.
+ 264              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\4.2\\psoc creator\\import\\gnu\\arm\\5.4.
+ 265              		.file 4 "Generated_Source\\PSoC5/cytypes.h"
+ 266              		.file 5 "Generated_Source\\PSoC5/core_cm3.h"
+ 267              		.file 6 "Generated_Source\\PSoC5/Clock_1.h"
+ 268              		.file 7 "Generated_Source\\PSoC5/Clock_2.h"
+ 269              		.file 8 "Generated_Source\\PSoC5/VDAC8_1.h"
+ 270              		.file 9 "Generated_Source\\PSoC5/VDAC8_2.h"
+ 271              		.file 10 "Generated_Source\\PSoC5/Comp_1.h"
+ 272              		.file 11 "Generated_Source\\PSoC5/Comp_2.h"
+ 273              		.file 12 "Generated_Source\\PSoC5/PWM_1.h"
+ 274              		.file 13 "Generated_Source\\PSoC5/isr_1.h"
+ 275              		.file 14 "Generated_Source\\PSoC5/Counter_1.h"
+ 276              		.file 15 "Generated_Source\\PSoC5/UART_1.h"
+ 277              		.file 16 "Generated_Source\\PSoC5/LCD_1.h"
+ 278              		.file 17 "c:\\program files (x86)\\cypress\\psoc creator\\4.2\\psoc creator\\import\\gnu\\arm\\5.4
+ 279              		.section	.debug_info,"",%progbits
+ 280              	.Ldebug_info0:
+ 281 0000 E4030000 		.4byte	0x3e4
+ 282 0004 0400     		.2byte	0x4
+ 283 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 284 000a 04       		.byte	0x4
+ 285 000b 01       		.uleb128 0x1
+ 286 000c 30010000 		.4byte	.LASF46
+ 287 0010 0C       		.byte	0xc
+ 288 0011 BE020000 		.4byte	.LASF47
+ 289 0015 34000000 		.4byte	.LASF48
+ARM GAS  C:\Users\urdjt\AppData\Local\Temp\cc3iSUaz.s 			page 8
+
+
+ 290 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 291 001d 00000000 		.4byte	0
+ 292 0021 00000000 		.4byte	.Ldebug_line0
+ 293 0025 02       		.uleb128 0x2
+ 294 0026 01       		.byte	0x1
+ 295 0027 06       		.byte	0x6
+ 296 0028 0B030000 		.4byte	.LASF0
+ 297 002c 02       		.uleb128 0x2
+ 298 002d 01       		.byte	0x1
+ 299 002e 08       		.byte	0x8
+ 300 002f 22010000 		.4byte	.LASF1
+ 301 0033 02       		.uleb128 0x2
+ 302 0034 02       		.byte	0x2
+ 303 0035 05       		.byte	0x5
+ 304 0036 CA020000 		.4byte	.LASF2
+ 305 003a 02       		.uleb128 0x2
+ 306 003b 02       		.byte	0x2
+ 307 003c 07       		.byte	0x7
+ 308 003d C8000000 		.4byte	.LASF3
+ 309 0041 03       		.uleb128 0x3
+ 310 0042 9D000000 		.4byte	.LASF9
+ 311 0046 02       		.byte	0x2
+ 312 0047 3F       		.byte	0x3f
+ 313 0048 4C000000 		.4byte	0x4c
+ 314 004c 02       		.uleb128 0x2
+ 315 004d 04       		.byte	0x4
+ 316 004e 05       		.byte	0x5
+ 317 004f E6020000 		.4byte	.LASF4
+ 318 0053 02       		.uleb128 0x2
+ 319 0054 04       		.byte	0x4
+ 320 0055 07       		.byte	0x7
+ 321 0056 D2010000 		.4byte	.LASF5
+ 322 005a 02       		.uleb128 0x2
+ 323 005b 08       		.byte	0x8
+ 324 005c 05       		.byte	0x5
+ 325 005d 00000000 		.4byte	.LASF6
+ 326 0061 02       		.uleb128 0x2
+ 327 0062 08       		.byte	0x8
+ 328 0063 07       		.byte	0x7
+ 329 0064 5F020000 		.4byte	.LASF7
+ 330 0068 04       		.uleb128 0x4
+ 331 0069 04       		.byte	0x4
+ 332 006a 05       		.byte	0x5
+ 333 006b 696E7400 		.ascii	"int\000"
+ 334 006f 02       		.uleb128 0x2
+ 335 0070 04       		.byte	0x4
+ 336 0071 07       		.byte	0x7
+ 337 0072 52020000 		.4byte	.LASF8
+ 338 0076 03       		.uleb128 0x3
+ 339 0077 7D020000 		.4byte	.LASF10
+ 340 007b 03       		.byte	0x3
+ 341 007c 2C       		.byte	0x2c
+ 342 007d 41000000 		.4byte	0x41
+ 343 0081 05       		.uleb128 0x5
+ 344 0082 35020000 		.4byte	.LASF11
+ 345 0086 04       		.byte	0x4
+ 346 0087 E501     		.2byte	0x1e5
+ARM GAS  C:\Users\urdjt\AppData\Local\Temp\cc3iSUaz.s 			page 9
+
+
+ 347 0089 3A000000 		.4byte	0x3a
+ 348 008d 05       		.uleb128 0x5
+ 349 008e CC010000 		.4byte	.LASF12
+ 350 0092 04       		.byte	0x4
+ 351 0093 E801     		.2byte	0x1e8
+ 352 0095 33000000 		.4byte	0x33
+ 353 0099 02       		.uleb128 0x2
+ 354 009a 04       		.byte	0x4
+ 355 009b 04       		.byte	0x4
+ 356 009c 0A010000 		.4byte	.LASF13
+ 357 00a0 02       		.uleb128 0x2
+ 358 00a1 08       		.byte	0x8
+ 359 00a2 04       		.byte	0x4
+ 360 00a3 1E020000 		.4byte	.LASF14
+ 361 00a7 02       		.uleb128 0x2
+ 362 00a8 01       		.byte	0x1
+ 363 00a9 08       		.byte	0x8
+ 364 00aa C5020000 		.4byte	.LASF15
+ 365 00ae 02       		.uleb128 0x2
+ 366 00af 08       		.byte	0x8
+ 367 00b0 04       		.byte	0x4
+ 368 00b1 FF020000 		.4byte	.LASF16
+ 369 00b5 02       		.uleb128 0x2
+ 370 00b6 04       		.byte	0x4
+ 371 00b7 07       		.byte	0x7
+ 372 00b8 85020000 		.4byte	.LASF17
+ 373 00bc 06       		.uleb128 0x6
+ 374 00bd 30020000 		.4byte	.LASF49
+ 375 00c1 01       		.byte	0x1
+ 376 00c2 18       		.byte	0x18
+ 377 00c3 68000000 		.4byte	0x68
+ 378 00c7 00000000 		.4byte	.LFB64
+ 379 00cb 20010000 		.4byte	.LFE64-.LFB64
+ 380 00cf 01       		.uleb128 0x1
+ 381 00d0 9C       		.byte	0x9c
+ 382 00d1 5D020000 		.4byte	0x25d
+ 383 00d5 07       		.uleb128 0x7
+ 384 00d6 08000000 		.4byte	.LVL0
+ 385 00da 16030000 		.4byte	0x316
+ 386 00de 07       		.uleb128 0x7
+ 387 00df 0C000000 		.4byte	.LVL1
+ 388 00e3 21030000 		.4byte	0x321
+ 389 00e7 07       		.uleb128 0x7
+ 390 00e8 10000000 		.4byte	.LVL2
+ 391 00ec 2C030000 		.4byte	0x32c
+ 392 00f0 07       		.uleb128 0x7
+ 393 00f1 14000000 		.4byte	.LVL3
+ 394 00f5 37030000 		.4byte	0x337
+ 395 00f9 07       		.uleb128 0x7
+ 396 00fa 18000000 		.4byte	.LVL4
+ 397 00fe 42030000 		.4byte	0x342
+ 398 0102 07       		.uleb128 0x7
+ 399 0103 1C000000 		.4byte	.LVL5
+ 400 0107 4D030000 		.4byte	0x34d
+ 401 010b 07       		.uleb128 0x7
+ 402 010c 20000000 		.4byte	.LVL6
+ 403 0110 58030000 		.4byte	0x358
+ARM GAS  C:\Users\urdjt\AppData\Local\Temp\cc3iSUaz.s 			page 10
+
+
+ 404 0114 07       		.uleb128 0x7
+ 405 0115 24000000 		.4byte	.LVL7
+ 406 0119 63030000 		.4byte	0x363
+ 407 011d 07       		.uleb128 0x7
+ 408 011e 28000000 		.4byte	.LVL8
+ 409 0122 6E030000 		.4byte	0x36e
+ 410 0126 07       		.uleb128 0x7
+ 411 0127 2C000000 		.4byte	.LVL9
+ 412 012b 79030000 		.4byte	0x379
+ 413 012f 07       		.uleb128 0x7
+ 414 0130 30000000 		.4byte	.LVL10
+ 415 0134 84030000 		.4byte	0x384
+ 416 0138 07       		.uleb128 0x7
+ 417 0139 48000000 		.4byte	.LVL11
+ 418 013d 8F030000 		.4byte	0x38f
+ 419 0141 07       		.uleb128 0x7
+ 420 0142 50000000 		.4byte	.LVL12
+ 421 0146 9A030000 		.4byte	0x39a
+ 422 014a 08       		.uleb128 0x8
+ 423 014b 64000000 		.4byte	.LVL13
+ 424 014f A5030000 		.4byte	0x3a5
+ 425 0153 5D010000 		.4byte	0x15d
+ 426 0157 09       		.uleb128 0x9
+ 427 0158 01       		.uleb128 0x1
+ 428 0159 50       		.byte	0x50
+ 429 015a 01       		.uleb128 0x1
+ 430 015b 30       		.byte	0x30
+ 431 015c 00       		.byte	0
+ 432 015d 08       		.uleb128 0x8
+ 433 015e 82000000 		.4byte	.LVL14
+ 434 0162 B0030000 		.4byte	0x3b0
+ 435 0166 7D010000 		.4byte	0x17d
+ 436 016a 09       		.uleb128 0x9
+ 437 016b 01       		.uleb128 0x1
+ 438 016c 50       		.byte	0x50
+ 439 016d 05       		.uleb128 0x5
+ 440 016e 03       		.byte	0x3
+ 441 016f 00000000 		.4byte	toPrint
+ 442 0173 09       		.uleb128 0x9
+ 443 0174 01       		.uleb128 0x1
+ 444 0175 51       		.byte	0x51
+ 445 0176 05       		.uleb128 0x5
+ 446 0177 03       		.byte	0x3
+ 447 0178 00000000 		.4byte	.LC0
+ 448 017c 00       		.byte	0
+ 449 017d 08       		.uleb128 0x8
+ 450 017e 94000000 		.4byte	.LVL15
+ 451 0182 B0030000 		.4byte	0x3b0
+ 452 0186 9D010000 		.4byte	0x19d
+ 453 018a 09       		.uleb128 0x9
+ 454 018b 01       		.uleb128 0x1
+ 455 018c 50       		.byte	0x50
+ 456 018d 05       		.uleb128 0x5
+ 457 018e 03       		.byte	0x3
+ 458 018f 00000000 		.4byte	toPrint
+ 459 0193 09       		.uleb128 0x9
+ 460 0194 01       		.uleb128 0x1
+ARM GAS  C:\Users\urdjt\AppData\Local\Temp\cc3iSUaz.s 			page 11
+
+
+ 461 0195 51       		.byte	0x51
+ 462 0196 05       		.uleb128 0x5
+ 463 0197 03       		.byte	0x3
+ 464 0198 04000000 		.4byte	.LC1
+ 465 019c 00       		.byte	0
+ 466 019d 08       		.uleb128 0x8
+ 467 019e B0000000 		.4byte	.LVL16
+ 468 01a2 B0030000 		.4byte	0x3b0
+ 469 01a6 BA010000 		.4byte	0x1ba
+ 470 01aa 09       		.uleb128 0x9
+ 471 01ab 01       		.uleb128 0x1
+ 472 01ac 50       		.byte	0x50
+ 473 01ad 02       		.uleb128 0x2
+ 474 01ae 75       		.byte	0x75
+ 475 01af 00       		.sleb128 0
+ 476 01b0 09       		.uleb128 0x9
+ 477 01b1 01       		.uleb128 0x1
+ 478 01b2 51       		.byte	0x51
+ 479 01b3 05       		.uleb128 0x5
+ 480 01b4 03       		.byte	0x3
+ 481 01b5 08000000 		.4byte	.LC2
+ 482 01b9 00       		.byte	0
+ 483 01ba 08       		.uleb128 0x8
+ 484 01bb B6000000 		.4byte	.LVL17
+ 485 01bf BB030000 		.4byte	0x3bb
+ 486 01c3 CE010000 		.4byte	0x1ce
+ 487 01c7 09       		.uleb128 0x9
+ 488 01c8 01       		.uleb128 0x1
+ 489 01c9 50       		.byte	0x50
+ 490 01ca 02       		.uleb128 0x2
+ 491 01cb 75       		.byte	0x75
+ 492 01cc 00       		.sleb128 0
+ 493 01cd 00       		.byte	0
+ 494 01ce 08       		.uleb128 0x8
+ 495 01cf BE000000 		.4byte	.LVL18
+ 496 01d3 C6030000 		.4byte	0x3c6
+ 497 01d7 E6010000 		.4byte	0x1e6
+ 498 01db 09       		.uleb128 0x9
+ 499 01dc 01       		.uleb128 0x1
+ 500 01dd 50       		.byte	0x50
+ 501 01de 01       		.uleb128 0x1
+ 502 01df 30       		.byte	0x30
+ 503 01e0 09       		.uleb128 0x9
+ 504 01e1 01       		.uleb128 0x1
+ 505 01e2 51       		.byte	0x51
+ 506 01e3 01       		.uleb128 0x1
+ 507 01e4 30       		.byte	0x30
+ 508 01e5 00       		.byte	0
+ 509 01e6 07       		.uleb128 0x7
+ 510 01e7 C4000000 		.4byte	.LVL19
+ 511 01eb D1030000 		.4byte	0x3d1
+ 512 01ef 08       		.uleb128 0x8
+ 513 01f0 CC000000 		.4byte	.LVL20
+ 514 01f4 C6030000 		.4byte	0x3c6
+ 515 01f8 07020000 		.4byte	0x207
+ 516 01fc 09       		.uleb128 0x9
+ 517 01fd 01       		.uleb128 0x1
+ARM GAS  C:\Users\urdjt\AppData\Local\Temp\cc3iSUaz.s 			page 12
+
+
+ 518 01fe 50       		.byte	0x50
+ 519 01ff 01       		.uleb128 0x1
+ 520 0200 31       		.byte	0x31
+ 521 0201 09       		.uleb128 0x9
+ 522 0202 01       		.uleb128 0x1
+ 523 0203 51       		.byte	0x51
+ 524 0204 01       		.uleb128 0x1
+ 525 0205 30       		.byte	0x30
+ 526 0206 00       		.byte	0
+ 527 0207 07       		.uleb128 0x7
+ 528 0208 D2000000 		.4byte	.LVL21
+ 529 020c D1030000 		.4byte	0x3d1
+ 530 0210 08       		.uleb128 0x8
+ 531 0211 DA000000 		.4byte	.LVL22
+ 532 0215 C6030000 		.4byte	0x3c6
+ 533 0219 28020000 		.4byte	0x228
+ 534 021d 09       		.uleb128 0x9
+ 535 021e 01       		.uleb128 0x1
+ 536 021f 50       		.byte	0x50
+ 537 0220 01       		.uleb128 0x1
+ 538 0221 31       		.byte	0x31
+ 539 0222 09       		.uleb128 0x9
+ 540 0223 01       		.uleb128 0x1
+ 541 0224 51       		.byte	0x51
+ 542 0225 01       		.uleb128 0x1
+ 543 0226 37       		.byte	0x37
+ 544 0227 00       		.byte	0
+ 545 0228 07       		.uleb128 0x7
+ 546 0229 E0000000 		.4byte	.LVL23
+ 547 022d D1030000 		.4byte	0x3d1
+ 548 0231 08       		.uleb128 0x8
+ 549 0232 E8000000 		.4byte	.LVL24
+ 550 0236 C6030000 		.4byte	0x3c6
+ 551 023a 49020000 		.4byte	0x249
+ 552 023e 09       		.uleb128 0x9
+ 553 023f 01       		.uleb128 0x1
+ 554 0240 50       		.byte	0x50
+ 555 0241 01       		.uleb128 0x1
+ 556 0242 30       		.byte	0x30
+ 557 0243 09       		.uleb128 0x9
+ 558 0244 01       		.uleb128 0x1
+ 559 0245 51       		.byte	0x51
+ 560 0246 01       		.uleb128 0x1
+ 561 0247 37       		.byte	0x37
+ 562 0248 00       		.byte	0
+ 563 0249 0A       		.uleb128 0xa
+ 564 024a EE000000 		.4byte	.LVL25
+ 565 024e DC030000 		.4byte	0x3dc
+ 566 0252 09       		.uleb128 0x9
+ 567 0253 01       		.uleb128 0x1
+ 568 0254 50       		.byte	0x50
+ 569 0255 05       		.uleb128 0x5
+ 570 0256 03       		.byte	0x3
+ 571 0257 00000000 		.4byte	toPrint
+ 572 025b 00       		.byte	0
+ 573 025c 00       		.byte	0
+ 574 025d 0B       		.uleb128 0xb
+ARM GAS  C:\Users\urdjt\AppData\Local\Temp\cc3iSUaz.s 			page 13
+
+
+ 575 025e F5010000 		.4byte	.LASF18
+ 576 0262 05       		.byte	0x5
+ 577 0263 1207     		.2byte	0x712
+ 578 0265 69020000 		.4byte	0x269
+ 579 0269 0C       		.uleb128 0xc
+ 580 026a 76000000 		.4byte	0x76
+ 581 026e 0D       		.uleb128 0xd
+ 582 026f 76020000 		.4byte	.LASF19
+ 583 0273 01       		.byte	0x1
+ 584 0274 0F       		.byte	0xf
+ 585 0275 68000000 		.4byte	0x68
+ 586 0279 05       		.uleb128 0x5
+ 587 027a 03       		.byte	0x3
+ 588 027b 00000000 		.4byte	global
+ 589 027f 0D       		.uleb128 0xd
+ 590 0280 DB000000 		.4byte	.LASF20
+ 591 0284 01       		.byte	0x1
+ 592 0285 10       		.byte	0x10
+ 593 0286 81000000 		.4byte	0x81
+ 594 028a 05       		.uleb128 0x5
+ 595 028b 03       		.byte	0x3
+ 596 028c 00000000 		.4byte	isrCounter
+ 597 0290 0D       		.uleb128 0xd
+ 598 0291 28000000 		.4byte	.LASF21
+ 599 0295 01       		.byte	0x1
+ 600 0296 11       		.byte	0x11
+ 601 0297 8D000000 		.4byte	0x8d
+ 602 029b 05       		.uleb128 0x5
+ 603 029c 03       		.byte	0x3
+ 604 029d 00000000 		.4byte	freqCounter
+ 605 02a1 0D       		.uleb128 0xd
+ 606 02a2 E6000000 		.4byte	.LASF22
+ 607 02a6 01       		.byte	0x1
+ 608 02a7 12       		.byte	0x12
+ 609 02a8 8D000000 		.4byte	0x8d
+ 610 02ac 05       		.uleb128 0x5
+ 611 02ad 03       		.byte	0x3
+ 612 02ae 00000000 		.4byte	prevFreqCount
+ 613 02b2 0E       		.uleb128 0xe
+ 614 02b3 A7000000 		.4byte	0xa7
+ 615 02b7 C2020000 		.4byte	0x2c2
+ 616 02bb 0F       		.uleb128 0xf
+ 617 02bc B5000000 		.4byte	0xb5
+ 618 02c0 03       		.byte	0x3
+ 619 02c1 00       		.byte	0
+ 620 02c2 0D       		.uleb128 0xd
+ 621 02c3 3C020000 		.4byte	.LASF23
+ 622 02c7 01       		.byte	0x1
+ 623 02c8 13       		.byte	0x13
+ 624 02c9 B2020000 		.4byte	0x2b2
+ 625 02cd 05       		.uleb128 0x5
+ 626 02ce 03       		.byte	0x3
+ 627 02cf 00000000 		.4byte	toPrint
+ 628 02d3 0E       		.uleb128 0xe
+ 629 02d4 A7000000 		.4byte	0xa7
+ 630 02d8 E3020000 		.4byte	0x2e3
+ 631 02dc 0F       		.uleb128 0xf
+ARM GAS  C:\Users\urdjt\AppData\Local\Temp\cc3iSUaz.s 			page 14
+
+
+ 632 02dd B5000000 		.4byte	0xb5
+ 633 02e1 0F       		.byte	0xf
+ 634 02e2 00       		.byte	0
+ 635 02e3 0D       		.uleb128 0xd
+ 636 02e4 25020000 		.4byte	.LASF24
+ 637 02e8 01       		.byte	0x1
+ 638 02e9 14       		.byte	0x14
+ 639 02ea D3020000 		.4byte	0x2d3
+ 640 02ee 05       		.uleb128 0x5
+ 641 02ef 03       		.byte	0x3
+ 642 02f0 00000000 		.4byte	toTransmit
+ 643 02f4 0D       		.uleb128 0xd
+ 644 02f5 D4020000 		.4byte	.LASF25
+ 645 02f9 01       		.byte	0x1
+ 646 02fa 15       		.byte	0x15
+ 647 02fb 81000000 		.4byte	0x81
+ 648 02ff 05       		.uleb128 0x5
+ 649 0300 03       		.byte	0x3
+ 650 0301 00000000 		.4byte	counterDifference
+ 651 0305 0D       		.uleb128 0xd
+ 652 0306 E4010000 		.4byte	.LASF26
+ 653 030a 01       		.byte	0x1
+ 654 030b 16       		.byte	0x16
+ 655 030c 8D000000 		.4byte	0x8d
+ 656 0310 05       		.uleb128 0x5
+ 657 0311 03       		.byte	0x3
+ 658 0312 00000000 		.4byte	temp
+ 659 0316 10       		.uleb128 0x10
+ 660 0317 BE010000 		.4byte	.LASF27
+ 661 031b BE010000 		.4byte	.LASF27
+ 662 031f 06       		.byte	0x6
+ 663 0320 27       		.byte	0x27
+ 664 0321 10       		.uleb128 0x10
+ 665 0322 02020000 		.4byte	.LASF28
+ 666 0326 02020000 		.4byte	.LASF28
+ 667 032a 07       		.byte	0x7
+ 668 032b 27       		.byte	0x27
+ 669 032c 10       		.uleb128 0x10
+ 670 032d 10020000 		.4byte	.LASF29
+ 671 0331 10020000 		.4byte	.LASF29
+ 672 0335 08       		.byte	0x8
+ 673 0336 33       		.byte	0x33
+ 674 0337 10       		.uleb128 0x10
+ 675 0338 44020000 		.4byte	.LASF30
+ 676 033c 44020000 		.4byte	.LASF30
+ 677 0340 09       		.byte	0x9
+ 678 0341 33       		.byte	0x33
+ 679 0342 10       		.uleb128 0x10
+ 680 0343 28030000 		.4byte	.LASF31
+ 681 0347 28030000 		.4byte	.LASF31
+ 682 034b 0A       		.byte	0xa
+ 683 034c 3F       		.byte	0x3f
+ 684 034d 10       		.uleb128 0x10
+ 685 034e 1B000000 		.4byte	.LASF32
+ 686 0352 1B000000 		.4byte	.LASF32
+ 687 0356 0B       		.byte	0xb
+ 688 0357 3F       		.byte	0x3f
+ARM GAS  C:\Users\urdjt\AppData\Local\Temp\cc3iSUaz.s 			page 15
+
+
+ 689 0358 10       		.uleb128 0x10
+ 690 0359 E9010000 		.4byte	.LASF33
+ 691 035d E9010000 		.4byte	.LASF33
+ 692 0361 0C       		.byte	0xc
+ 693 0362 92       		.byte	0x92
+ 694 0363 10       		.uleb128 0x10
+ 695 0364 BC000000 		.4byte	.LASF34
+ 696 0368 BC000000 		.4byte	.LASF34
+ 697 036c 0D       		.byte	0xd
+ 698 036d 17       		.byte	0x17
+ 699 036e 10       		.uleb128 0x10
+ 700 036f EF020000 		.4byte	.LASF35
+ 701 0373 EF020000 		.4byte	.LASF35
+ 702 0377 0E       		.byte	0xe
+ 703 0378 4F       		.byte	0x4f
+ 704 0379 10       		.uleb128 0x10
+ 705 037a 0E000000 		.4byte	.LASF36
+ 706 037e 0E000000 		.4byte	.LASF36
+ 707 0382 0F       		.byte	0xf
+ 708 0383 54       		.byte	0x54
+ 709 0384 10       		.uleb128 0x10
+ 710 0385 35030000 		.4byte	.LASF37
+ 711 0389 35030000 		.4byte	.LASF37
+ 712 038d 10       		.byte	0x10
+ 713 038e 38       		.byte	0x38
+ 714 038f 10       		.uleb128 0x10
+ 715 0390 A5020000 		.4byte	.LASF38
+ 716 0394 A5020000 		.4byte	.LASF38
+ 717 0398 0C       		.byte	0xc
+ 718 0399 97       		.byte	0x97
+ 719 039a 10       		.uleb128 0x10
+ 720 039b F4000000 		.4byte	.LASF39
+ 721 039f F4000000 		.4byte	.LASF39
+ 722 03a3 0E       		.byte	0xe
+ 723 03a4 5D       		.byte	0x5d
+ 724 03a5 10       		.uleb128 0x10
+ 725 03a6 8E020000 		.4byte	.LASF40
+ 726 03aa 8E020000 		.4byte	.LASF40
+ 727 03ae 0E       		.byte	0xe
+ 728 03af 5A       		.byte	0x5a
+ 729 03b0 10       		.uleb128 0x10
+ 730 03b1 50030000 		.4byte	.LASF41
+ 731 03b5 50030000 		.4byte	.LASF41
+ 732 03b9 11       		.byte	0x11
+ 733 03ba E7       		.byte	0xe7
+ 734 03bb 10       		.uleb128 0x10
+ 735 03bc 17030000 		.4byte	.LASF42
+ 736 03c0 17030000 		.4byte	.LASF42
+ 737 03c4 0F       		.byte	0xf
+ 738 03c5 8B       		.byte	0x8b
+ 739 03c6 10       		.uleb128 0x10
+ 740 03c7 41030000 		.4byte	.LASF43
+ 741 03cb 41030000 		.4byte	.LASF43
+ 742 03cf 10       		.byte	0x10
+ 743 03d0 3D       		.byte	0x3d
+ 744 03d1 10       		.uleb128 0x10
+ 745 03d2 A7000000 		.4byte	.LASF44
+ARM GAS  C:\Users\urdjt\AppData\Local\Temp\cc3iSUaz.s 			page 16
+
+
+ 746 03d6 A7000000 		.4byte	.LASF44
+ 747 03da 10       		.byte	0x10
+ 748 03db 61       		.byte	0x61
+ 749 03dc 10       		.uleb128 0x10
+ 750 03dd 10010000 		.4byte	.LASF45
+ 751 03e1 10010000 		.4byte	.LASF45
+ 752 03e5 10       		.byte	0x10
+ 753 03e6 3C       		.byte	0x3c
+ 754 03e7 00       		.byte	0
+ 755              		.section	.debug_abbrev,"",%progbits
+ 756              	.Ldebug_abbrev0:
+ 757 0000 01       		.uleb128 0x1
+ 758 0001 11       		.uleb128 0x11
+ 759 0002 01       		.byte	0x1
+ 760 0003 25       		.uleb128 0x25
+ 761 0004 0E       		.uleb128 0xe
+ 762 0005 13       		.uleb128 0x13
+ 763 0006 0B       		.uleb128 0xb
+ 764 0007 03       		.uleb128 0x3
+ 765 0008 0E       		.uleb128 0xe
+ 766 0009 1B       		.uleb128 0x1b
+ 767 000a 0E       		.uleb128 0xe
+ 768 000b 55       		.uleb128 0x55
+ 769 000c 17       		.uleb128 0x17
+ 770 000d 11       		.uleb128 0x11
+ 771 000e 01       		.uleb128 0x1
+ 772 000f 10       		.uleb128 0x10
+ 773 0010 17       		.uleb128 0x17
+ 774 0011 00       		.byte	0
+ 775 0012 00       		.byte	0
+ 776 0013 02       		.uleb128 0x2
+ 777 0014 24       		.uleb128 0x24
+ 778 0015 00       		.byte	0
+ 779 0016 0B       		.uleb128 0xb
+ 780 0017 0B       		.uleb128 0xb
+ 781 0018 3E       		.uleb128 0x3e
+ 782 0019 0B       		.uleb128 0xb
+ 783 001a 03       		.uleb128 0x3
+ 784 001b 0E       		.uleb128 0xe
+ 785 001c 00       		.byte	0
+ 786 001d 00       		.byte	0
+ 787 001e 03       		.uleb128 0x3
+ 788 001f 16       		.uleb128 0x16
+ 789 0020 00       		.byte	0
+ 790 0021 03       		.uleb128 0x3
+ 791 0022 0E       		.uleb128 0xe
+ 792 0023 3A       		.uleb128 0x3a
+ 793 0024 0B       		.uleb128 0xb
+ 794 0025 3B       		.uleb128 0x3b
+ 795 0026 0B       		.uleb128 0xb
+ 796 0027 49       		.uleb128 0x49
+ 797 0028 13       		.uleb128 0x13
+ 798 0029 00       		.byte	0
+ 799 002a 00       		.byte	0
+ 800 002b 04       		.uleb128 0x4
+ 801 002c 24       		.uleb128 0x24
+ 802 002d 00       		.byte	0
+ARM GAS  C:\Users\urdjt\AppData\Local\Temp\cc3iSUaz.s 			page 17
+
+
+ 803 002e 0B       		.uleb128 0xb
+ 804 002f 0B       		.uleb128 0xb
+ 805 0030 3E       		.uleb128 0x3e
+ 806 0031 0B       		.uleb128 0xb
+ 807 0032 03       		.uleb128 0x3
+ 808 0033 08       		.uleb128 0x8
+ 809 0034 00       		.byte	0
+ 810 0035 00       		.byte	0
+ 811 0036 05       		.uleb128 0x5
+ 812 0037 16       		.uleb128 0x16
+ 813 0038 00       		.byte	0
+ 814 0039 03       		.uleb128 0x3
+ 815 003a 0E       		.uleb128 0xe
+ 816 003b 3A       		.uleb128 0x3a
+ 817 003c 0B       		.uleb128 0xb
+ 818 003d 3B       		.uleb128 0x3b
+ 819 003e 05       		.uleb128 0x5
+ 820 003f 49       		.uleb128 0x49
+ 821 0040 13       		.uleb128 0x13
+ 822 0041 00       		.byte	0
+ 823 0042 00       		.byte	0
+ 824 0043 06       		.uleb128 0x6
+ 825 0044 2E       		.uleb128 0x2e
+ 826 0045 01       		.byte	0x1
+ 827 0046 3F       		.uleb128 0x3f
+ 828 0047 19       		.uleb128 0x19
+ 829 0048 03       		.uleb128 0x3
+ 830 0049 0E       		.uleb128 0xe
+ 831 004a 3A       		.uleb128 0x3a
+ 832 004b 0B       		.uleb128 0xb
+ 833 004c 3B       		.uleb128 0x3b
+ 834 004d 0B       		.uleb128 0xb
+ 835 004e 27       		.uleb128 0x27
+ 836 004f 19       		.uleb128 0x19
+ 837 0050 49       		.uleb128 0x49
+ 838 0051 13       		.uleb128 0x13
+ 839 0052 8701     		.uleb128 0x87
+ 840 0054 19       		.uleb128 0x19
+ 841 0055 11       		.uleb128 0x11
+ 842 0056 01       		.uleb128 0x1
+ 843 0057 12       		.uleb128 0x12
+ 844 0058 06       		.uleb128 0x6
+ 845 0059 40       		.uleb128 0x40
+ 846 005a 18       		.uleb128 0x18
+ 847 005b 9742     		.uleb128 0x2117
+ 848 005d 19       		.uleb128 0x19
+ 849 005e 01       		.uleb128 0x1
+ 850 005f 13       		.uleb128 0x13
+ 851 0060 00       		.byte	0
+ 852 0061 00       		.byte	0
+ 853 0062 07       		.uleb128 0x7
+ 854 0063 898201   		.uleb128 0x4109
+ 855 0066 00       		.byte	0
+ 856 0067 11       		.uleb128 0x11
+ 857 0068 01       		.uleb128 0x1
+ 858 0069 31       		.uleb128 0x31
+ 859 006a 13       		.uleb128 0x13
+ARM GAS  C:\Users\urdjt\AppData\Local\Temp\cc3iSUaz.s 			page 18
+
+
+ 860 006b 00       		.byte	0
+ 861 006c 00       		.byte	0
+ 862 006d 08       		.uleb128 0x8
+ 863 006e 898201   		.uleb128 0x4109
+ 864 0071 01       		.byte	0x1
+ 865 0072 11       		.uleb128 0x11
+ 866 0073 01       		.uleb128 0x1
+ 867 0074 31       		.uleb128 0x31
+ 868 0075 13       		.uleb128 0x13
+ 869 0076 01       		.uleb128 0x1
+ 870 0077 13       		.uleb128 0x13
+ 871 0078 00       		.byte	0
+ 872 0079 00       		.byte	0
+ 873 007a 09       		.uleb128 0x9
+ 874 007b 8A8201   		.uleb128 0x410a
+ 875 007e 00       		.byte	0
+ 876 007f 02       		.uleb128 0x2
+ 877 0080 18       		.uleb128 0x18
+ 878 0081 9142     		.uleb128 0x2111
+ 879 0083 18       		.uleb128 0x18
+ 880 0084 00       		.byte	0
+ 881 0085 00       		.byte	0
+ 882 0086 0A       		.uleb128 0xa
+ 883 0087 898201   		.uleb128 0x4109
+ 884 008a 01       		.byte	0x1
+ 885 008b 11       		.uleb128 0x11
+ 886 008c 01       		.uleb128 0x1
+ 887 008d 31       		.uleb128 0x31
+ 888 008e 13       		.uleb128 0x13
+ 889 008f 00       		.byte	0
+ 890 0090 00       		.byte	0
+ 891 0091 0B       		.uleb128 0xb
+ 892 0092 34       		.uleb128 0x34
+ 893 0093 00       		.byte	0
+ 894 0094 03       		.uleb128 0x3
+ 895 0095 0E       		.uleb128 0xe
+ 896 0096 3A       		.uleb128 0x3a
+ 897 0097 0B       		.uleb128 0xb
+ 898 0098 3B       		.uleb128 0x3b
+ 899 0099 05       		.uleb128 0x5
+ 900 009a 49       		.uleb128 0x49
+ 901 009b 13       		.uleb128 0x13
+ 902 009c 3F       		.uleb128 0x3f
+ 903 009d 19       		.uleb128 0x19
+ 904 009e 3C       		.uleb128 0x3c
+ 905 009f 19       		.uleb128 0x19
+ 906 00a0 00       		.byte	0
+ 907 00a1 00       		.byte	0
+ 908 00a2 0C       		.uleb128 0xc
+ 909 00a3 35       		.uleb128 0x35
+ 910 00a4 00       		.byte	0
+ 911 00a5 49       		.uleb128 0x49
+ 912 00a6 13       		.uleb128 0x13
+ 913 00a7 00       		.byte	0
+ 914 00a8 00       		.byte	0
+ 915 00a9 0D       		.uleb128 0xd
+ 916 00aa 34       		.uleb128 0x34
+ARM GAS  C:\Users\urdjt\AppData\Local\Temp\cc3iSUaz.s 			page 19
+
+
+ 917 00ab 00       		.byte	0
+ 918 00ac 03       		.uleb128 0x3
+ 919 00ad 0E       		.uleb128 0xe
+ 920 00ae 3A       		.uleb128 0x3a
+ 921 00af 0B       		.uleb128 0xb
+ 922 00b0 3B       		.uleb128 0x3b
+ 923 00b1 0B       		.uleb128 0xb
+ 924 00b2 49       		.uleb128 0x49
+ 925 00b3 13       		.uleb128 0x13
+ 926 00b4 3F       		.uleb128 0x3f
+ 927 00b5 19       		.uleb128 0x19
+ 928 00b6 02       		.uleb128 0x2
+ 929 00b7 18       		.uleb128 0x18
+ 930 00b8 00       		.byte	0
+ 931 00b9 00       		.byte	0
+ 932 00ba 0E       		.uleb128 0xe
+ 933 00bb 01       		.uleb128 0x1
+ 934 00bc 01       		.byte	0x1
+ 935 00bd 49       		.uleb128 0x49
+ 936 00be 13       		.uleb128 0x13
+ 937 00bf 01       		.uleb128 0x1
+ 938 00c0 13       		.uleb128 0x13
+ 939 00c1 00       		.byte	0
+ 940 00c2 00       		.byte	0
+ 941 00c3 0F       		.uleb128 0xf
+ 942 00c4 21       		.uleb128 0x21
+ 943 00c5 00       		.byte	0
+ 944 00c6 49       		.uleb128 0x49
+ 945 00c7 13       		.uleb128 0x13
+ 946 00c8 2F       		.uleb128 0x2f
+ 947 00c9 0B       		.uleb128 0xb
+ 948 00ca 00       		.byte	0
+ 949 00cb 00       		.byte	0
+ 950 00cc 10       		.uleb128 0x10
+ 951 00cd 2E       		.uleb128 0x2e
+ 952 00ce 00       		.byte	0
+ 953 00cf 3F       		.uleb128 0x3f
+ 954 00d0 19       		.uleb128 0x19
+ 955 00d1 3C       		.uleb128 0x3c
+ 956 00d2 19       		.uleb128 0x19
+ 957 00d3 6E       		.uleb128 0x6e
+ 958 00d4 0E       		.uleb128 0xe
+ 959 00d5 03       		.uleb128 0x3
+ 960 00d6 0E       		.uleb128 0xe
+ 961 00d7 3A       		.uleb128 0x3a
+ 962 00d8 0B       		.uleb128 0xb
+ 963 00d9 3B       		.uleb128 0x3b
+ 964 00da 0B       		.uleb128 0xb
+ 965 00db 00       		.byte	0
+ 966 00dc 00       		.byte	0
+ 967 00dd 00       		.byte	0
+ 968              		.section	.debug_aranges,"",%progbits
+ 969 0000 1C000000 		.4byte	0x1c
+ 970 0004 0200     		.2byte	0x2
+ 971 0006 00000000 		.4byte	.Ldebug_info0
+ 972 000a 04       		.byte	0x4
+ 973 000b 00       		.byte	0
+ARM GAS  C:\Users\urdjt\AppData\Local\Temp\cc3iSUaz.s 			page 20
+
+
+ 974 000c 0000     		.2byte	0
+ 975 000e 0000     		.2byte	0
+ 976 0010 00000000 		.4byte	.LFB64
+ 977 0014 20010000 		.4byte	.LFE64-.LFB64
+ 978 0018 00000000 		.4byte	0
+ 979 001c 00000000 		.4byte	0
+ 980              		.section	.debug_ranges,"",%progbits
+ 981              	.Ldebug_ranges0:
+ 982 0000 00000000 		.4byte	.LFB64
+ 983 0004 20010000 		.4byte	.LFE64
+ 984 0008 00000000 		.4byte	0
+ 985 000c 00000000 		.4byte	0
+ 986              		.section	.debug_line,"",%progbits
+ 987              	.Ldebug_line0:
+ 988 0000 87020000 		.section	.debug_str,"MS",%progbits,1
+ 988      02004702 
+ 988      00000201 
+ 988      FB0E0D00 
+ 988      01010101 
+ 989              	.LASF6:
+ 990 0000 6C6F6E67 		.ascii	"long long int\000"
+ 990      206C6F6E 
+ 990      6720696E 
+ 990      7400
+ 991              	.LASF36:
+ 992 000e 55415254 		.ascii	"UART_1_Start\000"
+ 992      5F315F53 
+ 992      74617274 
+ 992      00
+ 993              	.LASF32:
+ 994 001b 436F6D70 		.ascii	"Comp_2_Start\000"
+ 994      5F325F53 
+ 994      74617274 
+ 994      00
+ 995              	.LASF21:
+ 996 0028 66726571 		.ascii	"freqCounter\000"
+ 996      436F756E 
+ 996      74657200 
+ 997              	.LASF48:
+ 998 0034 453A5C50 		.ascii	"E:\\Praktikum adaptive Sensorelektronik\\PSoC Creat"
+ 998      72616B74 
+ 998      696B756D 
+ 998      20616461 
+ 998      70746976 
+ 999 0065 6F725C56 		.ascii	"or\\Versuch 5\\555_Timer\\Workspace01\\Frequenzaehl"
+ 999      65727375 
+ 999      63682035 
+ 999      5C353535 
+ 999      5F54696D 
+ 1000 0094 65722E63 		.ascii	"er.cydsn\000"
+ 1000      7964736E 
+ 1000      00
+ 1001              	.LASF9:
+ 1002 009d 5F5F696E 		.ascii	"__int32_t\000"
+ 1002      7433325F 
+ 1002      7400
+ 1003              	.LASF44:
+ARM GAS  C:\Users\urdjt\AppData\Local\Temp\cc3iSUaz.s 			page 21
+
+
+ 1004 00a7 4C43445F 		.ascii	"LCD_1_PrintU32Number\000"
+ 1004      315F5072 
+ 1004      696E7455 
+ 1004      33324E75 
+ 1004      6D626572 
+ 1005              	.LASF34:
+ 1006 00bc 6973725F 		.ascii	"isr_1_Start\000"
+ 1006      315F5374 
+ 1006      61727400 
+ 1007              	.LASF3:
+ 1008 00c8 73686F72 		.ascii	"short unsigned int\000"
+ 1008      7420756E 
+ 1008      7369676E 
+ 1008      65642069 
+ 1008      6E7400
+ 1009              	.LASF20:
+ 1010 00db 69737243 		.ascii	"isrCounter\000"
+ 1010      6F756E74 
+ 1010      657200
+ 1011              	.LASF22:
+ 1012 00e6 70726576 		.ascii	"prevFreqCount\000"
+ 1012      46726571 
+ 1012      436F756E 
+ 1012      7400
+ 1013              	.LASF39:
+ 1014 00f4 436F756E 		.ascii	"Counter_1_ReadCounter\000"
+ 1014      7465725F 
+ 1014      315F5265 
+ 1014      6164436F 
+ 1014      756E7465 
+ 1015              	.LASF13:
+ 1016 010a 666C6F61 		.ascii	"float\000"
+ 1016      7400
+ 1017              	.LASF45:
+ 1018 0110 4C43445F 		.ascii	"LCD_1_PrintString\000"
+ 1018      315F5072 
+ 1018      696E7453 
+ 1018      7472696E 
+ 1018      6700
+ 1019              	.LASF1:
+ 1020 0122 756E7369 		.ascii	"unsigned char\000"
+ 1020      676E6564 
+ 1020      20636861 
+ 1020      7200
+ 1021              	.LASF46:
+ 1022 0130 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 1022      43313120 
+ 1022      352E342E 
+ 1022      31203230 
+ 1022      31363036 
+ 1023 0163 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m3 -mthumb -g -O"
+ 1023      20726576 
+ 1023      6973696F 
+ 1023      6E203233 
+ 1023      37373135 
+ 1024 0196 67202D66 		.ascii	"g -ffunction-sections -ffat-lto-objects\000"
+ 1024      66756E63 
+ARM GAS  C:\Users\urdjt\AppData\Local\Temp\cc3iSUaz.s 			page 22
+
+
+ 1024      74696F6E 
+ 1024      2D736563 
+ 1024      74696F6E 
+ 1025              	.LASF27:
+ 1026 01be 436C6F63 		.ascii	"Clock_1_Start\000"
+ 1026      6B5F315F 
+ 1026      53746172 
+ 1026      7400
+ 1027              	.LASF12:
+ 1028 01cc 696E7431 		.ascii	"int16\000"
+ 1028      3600
+ 1029              	.LASF5:
+ 1030 01d2 6C6F6E67 		.ascii	"long unsigned int\000"
+ 1030      20756E73 
+ 1030      69676E65 
+ 1030      6420696E 
+ 1030      7400
+ 1031              	.LASF26:
+ 1032 01e4 74656D70 		.ascii	"temp\000"
+ 1032      00
+ 1033              	.LASF33:
+ 1034 01e9 50574D5F 		.ascii	"PWM_1_Start\000"
+ 1034      315F5374 
+ 1034      61727400 
+ 1035              	.LASF18:
+ 1036 01f5 49544D5F 		.ascii	"ITM_RxBuffer\000"
+ 1036      52784275 
+ 1036      66666572 
+ 1036      00
+ 1037              	.LASF28:
+ 1038 0202 436C6F63 		.ascii	"Clock_2_Start\000"
+ 1038      6B5F325F 
+ 1038      53746172 
+ 1038      7400
+ 1039              	.LASF29:
+ 1040 0210 56444143 		.ascii	"VDAC8_1_Start\000"
+ 1040      385F315F 
+ 1040      53746172 
+ 1040      7400
+ 1041              	.LASF14:
+ 1042 021e 646F7562 		.ascii	"double\000"
+ 1042      6C6500
+ 1043              	.LASF24:
+ 1044 0225 746F5472 		.ascii	"toTransmit\000"
+ 1044      616E736D 
+ 1044      697400
+ 1045              	.LASF49:
+ 1046 0230 6D61696E 		.ascii	"main\000"
+ 1046      00
+ 1047              	.LASF11:
+ 1048 0235 75696E74 		.ascii	"uint16\000"
+ 1048      313600
+ 1049              	.LASF23:
+ 1050 023c 746F5072 		.ascii	"toPrint\000"
+ 1050      696E7400 
+ 1051              	.LASF30:
+ 1052 0244 56444143 		.ascii	"VDAC8_2_Start\000"
+ARM GAS  C:\Users\urdjt\AppData\Local\Temp\cc3iSUaz.s 			page 23
+
+
+ 1052      385F325F 
+ 1052      53746172 
+ 1052      7400
+ 1053              	.LASF8:
+ 1054 0252 756E7369 		.ascii	"unsigned int\000"
+ 1054      676E6564 
+ 1054      20696E74 
+ 1054      00
+ 1055              	.LASF7:
+ 1056 025f 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 1056      206C6F6E 
+ 1056      6720756E 
+ 1056      7369676E 
+ 1056      65642069 
+ 1057              	.LASF19:
+ 1058 0276 676C6F62 		.ascii	"global\000"
+ 1058      616C00
+ 1059              	.LASF10:
+ 1060 027d 696E7433 		.ascii	"int32_t\000"
+ 1060      325F7400 
+ 1061              	.LASF17:
+ 1062 0285 73697A65 		.ascii	"sizetype\000"
+ 1062      74797065 
+ 1062      00
+ 1063              	.LASF40:
+ 1064 028e 436F756E 		.ascii	"Counter_1_WriteCounter\000"
+ 1064      7465725F 
+ 1064      315F5772 
+ 1064      69746543 
+ 1064      6F756E74 
+ 1065              	.LASF38:
+ 1066 02a5 50574D5F 		.ascii	"PWM_1_ReadStatusRegister\000"
+ 1066      315F5265 
+ 1066      61645374 
+ 1066      61747573 
+ 1066      52656769 
+ 1067              	.LASF47:
+ 1068 02be 6D61696E 		.ascii	"main.c\000"
+ 1068      2E6300
+ 1069              	.LASF15:
+ 1070 02c5 63686172 		.ascii	"char\000"
+ 1070      00
+ 1071              	.LASF2:
+ 1072 02ca 73686F72 		.ascii	"short int\000"
+ 1072      7420696E 
+ 1072      7400
+ 1073              	.LASF25:
+ 1074 02d4 636F756E 		.ascii	"counterDifference\000"
+ 1074      74657244 
+ 1074      69666665 
+ 1074      72656E63 
+ 1074      6500
+ 1075              	.LASF4:
+ 1076 02e6 6C6F6E67 		.ascii	"long int\000"
+ 1076      20696E74 
+ 1076      00
+ 1077              	.LASF35:
+ARM GAS  C:\Users\urdjt\AppData\Local\Temp\cc3iSUaz.s 			page 24
+
+
+ 1078 02ef 436F756E 		.ascii	"Counter_1_Start\000"
+ 1078      7465725F 
+ 1078      315F5374 
+ 1078      61727400 
+ 1079              	.LASF16:
+ 1080 02ff 6C6F6E67 		.ascii	"long double\000"
+ 1080      20646F75 
+ 1080      626C6500 
+ 1081              	.LASF0:
+ 1082 030b 7369676E 		.ascii	"signed char\000"
+ 1082      65642063 
+ 1082      68617200 
+ 1083              	.LASF42:
+ 1084 0317 55415254 		.ascii	"UART_1_PutString\000"
+ 1084      5F315F50 
+ 1084      75745374 
+ 1084      72696E67 
+ 1084      00
+ 1085              	.LASF31:
+ 1086 0328 436F6D70 		.ascii	"Comp_1_Start\000"
+ 1086      5F315F53 
+ 1086      74617274 
+ 1086      00
+ 1087              	.LASF37:
+ 1088 0335 4C43445F 		.ascii	"LCD_1_Start\000"
+ 1088      315F5374 
+ 1088      61727400 
+ 1089              	.LASF43:
+ 1090 0341 4C43445F 		.ascii	"LCD_1_Position\000"
+ 1090      315F506F 
+ 1090      73697469 
+ 1090      6F6E00
+ 1091              	.LASF41:
+ 1092 0350 73707269 		.ascii	"sprintf\000"
+ 1092      6E746600 
+ 1093              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran

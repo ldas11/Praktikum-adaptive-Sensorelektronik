@@ -1,0 +1,6 @@
+E:\Praktikum adaptive Sensorelektronik\PSoC Creator\Versuch 4\Temperatursensor\Temp1.cydsn\Temp1.cyprj|ebf42a24-bb69-48fe-b65b-471304b7f3a7
+C:\Program Files (x86)\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\default\CyAnnotationLibrary\CyAnnotationLibrary.cylib\CyAnnotationLibrary.cyprj|e54efdd4-6162-4434-ad0d-ef8539b71bb7
+U:\Documents\PSoC Creator\4.2\Downloads ( 4.2).cylib\Downloads ( 4.2).cyprj|85c7ed9a-52b7-44da-bc4d-40f28c1bcea5
+C:\Program Files (x86)\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\cycomponentlibraryupdates\CyComponentLibraryUpdates.cylib\CyComponentLibraryUpdates.cyprj|ea88cf15-f365-452a-a6bd-783e21cb629d
+C:\Program Files (x86)\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\cycomponentlibrary\CyComponentLibrary.cylib\CyComponentLibrary.cyprj|28fcd4c6-5105-49e0-90a9-7b99983d13d3
+C:\Program Files (x86)\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\cyprimitives\CyPrimitives.cylib\CyPrimitives.cyprj|224edfa5-58ea-4ac1-98df-72ca6aeab5fa

@@ -1,0 +1,8 @@
+E:\Praktikum adaptive Sensorelektronik\PSoC Creator\6\Workspace01\Teil1.cydsn\Teil1.cyprj|141eb6c2-75d5-481f-bbd5-58314ea04614
+C:\Program Files (x86)\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\default\CyAnnotationLibrary\CyAnnotationLibrary.cylib\CyAnnotationLibrary.cyprj|1f26ab42-de41-4f58-aec1-02ec601b643c
+U:\Documents\PSoC Creator\4.2\Downloads ( 4.2).cylib\Downloads ( 4.2).cyprj|3f434ef5-7e73-4a69-abc0-e148fa76b50a
+C:\Program Files (x86)\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\cycomponentlibraryupdates\CyComponentLibraryUpdates.cylib\CyComponentLibraryUpdates.cyprj|8b4d9923-595a-4d85-b989-d26b218ca34d
+C:\Program Files (x86)\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\cycomponentlibrary\CyComponentLibrary.cylib\CyComponentLibrary.cyprj|2145f9eb-16e2-4147-a5f1-49dad4a71c3d
+C:\Program Files (x86)\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\cyprimitives\CyPrimitives.cylib\CyPrimitives.cyprj|29194e3d-b652-4cab-ab04-274e1bb4e73f
+E:\Praktikum adaptive Sensorelektronik\PSoC Creator\6\Workspace01\Teil2.cydsn\Teil2.cyprj|f284300c-d4df-4739-bb52-2b00d236c9df
+E:\Praktikum adaptive Sensorelektronik\PSoC Creator\6\Workspace01\Teil2_Copy_01.cydsn\Teil2_Copy_01.cyprj|a6d95828-ed0e-46c1-ab68-c20753aa5eb2

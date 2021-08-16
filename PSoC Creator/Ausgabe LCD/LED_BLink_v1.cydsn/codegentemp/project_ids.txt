@@ -1,0 +1,7 @@
+E:\PSoC Creator\Ausgabe LCD\Aufgabe1.cydsn\Aufgabe1.cyprj|0f294750-4522-4989-b6ed-94ee32bcaaaf
+C:\Program Files (x86)\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\default\CyAnnotationLibrary\CyAnnotationLibrary.cylib\CyAnnotationLibrary.cyprj|31ec8f1b-6e41-42ed-ae38-35f7c0ef14e6
+U:\Documents\PSoC Creator\4.2\Downloads ( 4.2).cylib\Downloads ( 4.2).cyprj|d787c0ea-ac21-401a-bb59-45ff4ac95dbf
+C:\Program Files (x86)\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\cycomponentlibraryupdates\CyComponentLibraryUpdates.cylib\CyComponentLibraryUpdates.cyprj|2468f67b-a8ec-44d4-8185-5ccdc8680b07
+C:\Program Files (x86)\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\cycomponentlibrary\CyComponentLibrary.cylib\CyComponentLibrary.cyprj|3fd73391-b7c3-4078-bf75-b0ef4e68c7d6
+C:\Program Files (x86)\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\cyprimitives\CyPrimitives.cylib\CyPrimitives.cyprj|b406c83c-d3fd-4976-a6df-7523e6e3ee4c
+E:\PSoC Creator\Ausgabe LCD\LED_BLink_v1.cydsn\LED_BLink_v1.cyprj|a8c3767e-e806-4354-b1e0-065f51fae02e

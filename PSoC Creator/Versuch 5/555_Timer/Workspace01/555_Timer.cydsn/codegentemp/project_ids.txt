@@ -1,0 +1,6 @@
+E:\Praktikum adaptive Sensorelektronik\PSoC Creator\Versuch 5\555_Timer\Workspace01\555_Timer.cydsn\555_Timer.cyprj|9c3088a9-65cc-4853-ad51-8625e0e0d4b1
+C:\Program Files (x86)\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\default\CyAnnotationLibrary\CyAnnotationLibrary.cylib\CyAnnotationLibrary.cyprj|d1033039-3c4e-4b2b-87e7-8abc347673ea
+U:\Documents\PSoC Creator\4.2\Downloads ( 4.2).cylib\Downloads ( 4.2).cyprj|6cd69b5a-18d7-434c-9ae4-580e4e2a057d
+C:\Program Files (x86)\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\cycomponentlibraryupdates\CyComponentLibraryUpdates.cylib\CyComponentLibraryUpdates.cyprj|04b801ad-de8f-4ea4-8654-9bf29fe799b3
+C:\Program Files (x86)\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\cycomponentlibrary\CyComponentLibrary.cylib\CyComponentLibrary.cyprj|f59e9da8-bd4f-4449-948e-df60e20a33d3
+C:\Program Files (x86)\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\cyprimitives\CyPrimitives.cylib\CyPrimitives.cyprj|9d8c81ec-460b-48a8-99fb-50654796ac13

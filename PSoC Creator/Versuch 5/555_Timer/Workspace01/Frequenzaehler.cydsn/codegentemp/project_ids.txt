@@ -1,0 +1,7 @@
+E:\Praktikum adaptive Sensorelektronik\PSoC Creator\Versuch 5\555_Timer\Workspace01\555_Timer.cydsn\555_Timer.cyprj|2d8a8d5e-4c30-4f7a-9f3b-d12c63c609ef
+C:\Program Files (x86)\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\default\CyAnnotationLibrary\CyAnnotationLibrary.cylib\CyAnnotationLibrary.cyprj|7b2cf3f2-1fa0-4f13-b8f1-598ebaed7073
+U:\Documents\PSoC Creator\4.2\Downloads ( 4.2).cylib\Downloads ( 4.2).cyprj|589cb2e0-abc2-4b86-ab28-700b27d5ad00
+C:\Program Files (x86)\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\cycomponentlibraryupdates\CyComponentLibraryUpdates.cylib\CyComponentLibraryUpdates.cyprj|8e8ae36e-c21d-439c-9695-7a27f5f33b3e
+C:\Program Files (x86)\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\cycomponentlibrary\CyComponentLibrary.cylib\CyComponentLibrary.cyprj|e0de00fd-f4da-40a9-883c-503ff0d6311a
+C:\Program Files (x86)\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\cyprimitives\CyPrimitives.cylib\CyPrimitives.cyprj|ae198153-3d24-4523-9920-2a36091a3b4b
+E:\Praktikum adaptive Sensorelektronik\PSoC Creator\Versuch 5\555_Timer\Workspace01\Frequenzaehler.cydsn\Frequenzaehler.cyprj|ca5596fd-5a00-4e7c-89f1-fc56e16cee81

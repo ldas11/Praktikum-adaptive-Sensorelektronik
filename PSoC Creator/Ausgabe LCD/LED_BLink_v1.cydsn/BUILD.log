@@ -1,0 +1,6 @@
+--------------- Build Started: 05/14/2018 15:11:20 Project: LED_BLink_v1, Configuration: ARM GCC 5.4-2016-q2-update Debug ---------------
+cydsfit.exe -.appdatapath "C:\Users\urdjt\AppData\Local\Cypress Semiconductor\PSoC Creator\4.2" -.fdsnotice -.fdswarpdepfile=warp_dependencies.txt -.fdselabdepfile=elab_dependencies.txt -.fdsbldfile=generated_files.txt -.fdsreffile=referenced_files.txt -p "E:\PSoC Creator\Ausgabe LCD\LED_BLink_v1.cydsn\LED_BLink_v1.cyprj" -d CY8C5868AXI-LP035 -s "E:\PSoC Creator\Ausgabe LCD\LED_BLink_v1.cydsn\Generated_Source\PSoC5" -- -yv2 -q10 -ygs -o2 -v3 -.fftcfgtype=LE
+Error: prj.M0094: LED_BLink_v1.cydwr: The design wide resource file has unexpected errors: (Unknown archive format or empty file.). (File=E:\PSoC Creator\Ausgabe LCD\LED_BLink_v1.cydsn\LED_BLink_v1.cydwr)
+Elaborating Design...
+Error: fit.M0050: The fitter aborted due to errors, please address all errors and rebuild. (App=cydsfit)
+--------------- Build Failed: 05/14/2018 15:11:25 ---------------
